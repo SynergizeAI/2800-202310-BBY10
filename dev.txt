@@ -1,1 +1,2 @@
 This is the dev branch for Synergi.Ai
+Button component feature is complete.
