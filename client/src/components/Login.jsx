@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-function Login({ onLogin }) {
+function Login({ onLogin, onForgotPassword }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
@@ -11,6 +11,10 @@ function Login({ onLogin }) {
 
     // If login is successful, call onLogin
     onLogin();
+  };
+
+  const handleForgotPassword = () => {
+    onForgotPassword();
   };
 
   return (
@@ -24,6 +28,7 @@ function Login({ onLogin }) {
           <br />
           <button type="submit">Submit</button>
         </form>
+        <button onClick={handleForgotPassword}>Forgot Password?</button>
       </div>
     </>
   );

@@ -1,6 +1,6 @@
 // YourComponent.stories.ts|tsx
 
-import Login from './login';
+import Login from './Login';
 
 //👇 This default export determines where your story goes in the story list
 export default {
