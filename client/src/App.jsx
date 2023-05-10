@@ -2,6 +2,10 @@ import { useState } from 'react'
 import reactLogo from './assets/react.svg'
 import viteLogo from '/vite.svg'
 import './App.css'
+const dbConnect = require("./db/dbConnect");
+
+// execute database connection 
+dbConnect();
 
 function App() {
   const [count, setCount] = useState(0)
