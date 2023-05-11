@@ -1,16 +1,24 @@
 import { useState } from 'react';
 
-function Login({ onLogin }) {
+function Login({ onLogin, onForgotPassword }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
 
-  const handleSubmit = (e) => {
+  async function handleSubmit(e) {
     e.preventDefault();
     // send email and password to server for authentication
-    console.log(`email: ${email}, password: ${password}`);
+    await fetch('/api/login', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password }),
+    });
 
     // If login is successful, call onLogin
     onLogin();
+  };
+
+  const handleForgotPassword = () => {
+    onForgotPassword();
   };
 
   return (
@@ -24,6 +32,7 @@ function Login({ onLogin }) {
           <br />
           <button type="submit">Submit</button>
         </form>
+        <button onClick={handleForgotPassword}>Forgot Password?</button>
       </div>
     </>
   );
