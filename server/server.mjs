@@ -46,6 +46,7 @@ app.use(
 app.use('/api/record', records);
 app.use('/api/login', logins);
 app.use('/api/signup', signup);
+//app.use('/api/profile', profile);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
