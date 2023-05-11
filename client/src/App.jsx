@@ -3,9 +3,10 @@ import { Route, Routes } from 'react-router-dom';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import Login from './Login';
-import Logout from './Logout';
-import ForgotPassword from './ForgotPassword';
+import Login from './components/Login'
+import Logout from './components/Logout';
+import Signup from './components/Signup';
+import ForgotPassword from './components/ForgotPassword';
 import Navbar from './components/navbar';
 import RecordList from './components/recordList';
 import Edit from './components/edit';
@@ -34,20 +35,19 @@ function App() {
   return (
     <>
       <Navbar />
-      {showForgotPassword ? (
-        <ForgotPassword onCancel={handleCancelForgotPassword} />
-      ) : isLoggedIn ? (
-        <>
-          <Logout onLogout={handleLogout} />
-          <Routes>
-            <Route exact path="/" element={<RecordList />} />
-            <Route path="/edit/:id" element={<Edit />} />
-            <Route path="/create" element={<Create />} />
-          </Routes>
-        </>
-      ) : (
-        <Login onLogin={handleLogin} onForgotPassword={handleForgotPassword} />
-      )}
+
+      <>
+        {/* <Logout onLogout={handleLogout} /> */}
+        <Routes>
+          <Route exact path="/" element={<RecordList />} />
+          <Route path="/edit/:id" element={<Edit />} />
+          <Route path="/create" element={<Create />} />
+          <Route path="/signup" element={<Signup />} />
+          <Route path="/login" element={<Login />} />
+        </Routes>
+      </>
+
+
     </>
   );
 }
