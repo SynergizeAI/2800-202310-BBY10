@@ -77,7 +77,7 @@ app.use(
 app.use("/api/record", records);
 app.use("/api/login", logins);
 app.use("/api/signup", signup);
-P;
+
 app.use("/api/users", users);
 app.use("/api/getusers", getUsers);
 // app.use('/api/users', userRoutes);
