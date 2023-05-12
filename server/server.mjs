@@ -1,5 +1,4 @@
 import express from "express";
-import mongoose from "mongoose";
 import cors from "cors";
 import "./loadEnvironment.mjs";
 import records from "./routes/record.mjs";
@@ -12,6 +11,9 @@ import { connectAbly } from "./ably.mjs";
 import chatSpaceRoutes from "./routes/chatSpaceRoutes.mjs";
 import messageRoutes from "./routes/messageRoutes.mjs";
 import ablyAuth from "./routes/ablyAuth.mjs";
+import forgotPassword from './routes/forgotPassword.mjs'; // Import forgotPassword route
+import resetPassword from './routes/resetPassword.mjs'; // Import resetPassword route
+import logout from './routes/logout.mjs'; // Import logout route
 
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -80,6 +82,9 @@ app.use("/api/getusers", getUsers);
 app.use("/api/spaces", chatSpaceRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/ably-auth", ablyAuth);
+app.use('/api/forgot-password', forgotPassword); // Add forgotPassword route
+app.use('/api/reset-password', resetPassword); // Add resetPassword route
+app.use('/api/logout', logout); // Add logout route
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
