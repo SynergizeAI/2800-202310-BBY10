@@ -7,11 +7,11 @@ import jwt from "jsonwebtoken";
 const router = express.Router();
 
 router.post("/", async (req, res) => {
-  const { email, password } = req.body;
+  const { username, password } = req.body;
 
   try {
     const usersCollection = db.collection("users");
-    const user = await usersCollection.findOne({ email });
+    const user = await usersCollection.findOne({ username });
 
     if (!user) {
       res.status(401).json({ message: "Invalid username or password." });

@@ -1,11 +1,24 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 function Login({ onLogin }) {
-  const [email, setEmail] = useState('');
+  const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
 
   const navigate = useNavigate(); // Add this line
+
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      const response = await fetch("/api/users", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) {
+        navigate("/profile");
+      }
+    };
+    checkLoggedIn();
+  }, []);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -13,7 +26,7 @@ function Login({ onLogin }) {
     await fetch('/api/login', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
-      body: JSON.stringify({ email, password }),
+      body: JSON.stringify({ username, password }),
     });
 
     // If login is successful, call onLogin
@@ -35,7 +48,7 @@ function Login({ onLogin }) {
       <div>
         <h1>Login</h1>
         <form onSubmit={handleSubmit}>
-          <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" />
+          <input type="text" value={username} onChange={(e) => setUsername(e.target.value)} placeholder="Username" />
           <br />
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
           <br />
