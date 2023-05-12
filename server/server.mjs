@@ -23,12 +23,16 @@ const PORT = process.env.PORT || 5050;
 const app = express();
 
 
-try {
-  console.log("Connecting to Ably...");
-  await connectAbly();
-} catch (error) {
-  console.error("Failed to connect to Ably:", error);
-}
+(async () => {
+  try {
+    console.log("Connecting to Ably...");
+    await connectAbly();
+    console.log("Connected to Ably!");
+  } catch (error) {
+    console.error("Failed to connect to Ably:", error);
+  }
+})();
+
 
 app.use(cookieParser()); // This line is important!
 
