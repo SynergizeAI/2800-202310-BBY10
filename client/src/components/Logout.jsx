@@ -1,10 +1,15 @@
 import React from 'react';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 export function withSetLoggedIn(WrappedComponent, setLoggedIn) {
   return (props) => <WrappedComponent {...props} setLoggedIn={setLoggedIn} />;
 }
 
 function Logout({ setLoggedIn }) {
+
+  const navigate = useNavigate();
+
   const handleLogout = async () => {
     console.log("pressed button");
     try {
@@ -12,10 +17,9 @@ function Logout({ setLoggedIn }) {
         method: 'POST',
         credentials: 'include',
       });
-    console.log('this is supposed to work if you are reading this');
       if (response.ok) {
         setLoggedIn(false);
-        console.log('response shouldve worked if reading this');
+        navigate('/login');
       } else {
         console.log('Error logging out');
       }

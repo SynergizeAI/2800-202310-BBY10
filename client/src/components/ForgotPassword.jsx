@@ -23,7 +23,7 @@ function ForgotPassword({ onCancel }) {
       } else {
         // Show an error message or do any other action you need
         console.log('Error sending password reset email');
-        alert('Error sending password reset email.');
+        alert('Error sending password reset email');
       }
     } catch (error) {
       console.error('Error:', error);

@@ -1,18 +1,16 @@
 import express from 'express';
 import bcrypt from 'bcrypt';
 import db from "../db/conn.mjs";
-import crypto from 'crypto';
+import jwt from 'jsonwebtoken';
 import sgMail from '@sendgrid/mail';
 
-
 const router = express.Router();
+const SECRET_KEY = process.env.JWT_SECRET;
 
 router.post('/', async (req, res) => {
   const { email } = req.body;
 
-  // Generate a password reset token
-  const resetToken = crypto.randomBytes(32).toString('hex');
-
+  let resetToken; // Define resetToken here
 
   try {
     console.log('Connecting to database...');
@@ -26,11 +24,14 @@ router.post('/', async (req, res) => {
       return;
     }
 
+    resetToken = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' }); // Assign the value here
+
     console.log('Updating user with reset token...');
     await usersCollection.updateOne(
       { email },
       { $set: { passwordResetToken: resetToken, passwordResetTokenExpires: Date.now() + 3600000 } }
     );
+    console.log(resetToken);
   } catch (error) {
     console.error(error);
     res.status(500).json({ message: 'Error updating user with reset token.' });
@@ -42,7 +43,7 @@ router.post('/', async (req, res) => {
   // Send an email to the user with the password reset link containing the token
   const msg = {
     to: email,
-    from: 'dagunthery@gmail.com', // Replace with your SendGrid verified sender email
+    from: 'dagunthery@gmail.com',
     subject: 'Password Reset',
     text: `Please click the following link to reset your password: http://localhost:5173/reset-password/${resetToken}`,
     html: `<strong>Please click the following link to reset your password: <a href="http://localhost:5173/reset-password/${resetToken}">Reset Password</a></strong>`,
