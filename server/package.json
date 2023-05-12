@@ -17,8 +17,13 @@
     "uuid": "^9.0.0"
   },
   "devDependencies": {
+    "ably": "^1.2.39",
     "bcrypt": "^5.1.0",
+    "connect-mongo": "^5.0.0",
     "cookie-parser": "^1.4.6",
-    "jsonwebtoken": "^9.0.0"
+    "express-session": "^1.17.3",
+    "jsonwebtoken": "^9.0.0",
+    "mongoose": "^7.1.1",
+    "nanoid": "^4.0.2"
   }
 }
