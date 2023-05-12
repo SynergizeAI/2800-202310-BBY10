@@ -18,7 +18,7 @@ const App = () => {
 
   return (
     <div>
-      <Navbar />
+      <Navbar loggedIn={loggedIn} setLoggedIn={setLoggedIn} />
       <Routes>
         <Route exact path="/" element={<Login />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
