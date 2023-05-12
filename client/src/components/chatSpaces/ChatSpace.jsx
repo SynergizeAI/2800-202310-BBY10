@@ -8,6 +8,7 @@ function ChatSpace() {
   const [messages, setMessages] = useState([]);
   const [isUserMember, setIsUserMember] = useState(null);
   const [users, setUsers] = useState({});
+  const [code, setCode] = useState("");
 
   useEffect(() => {
     (async function validateAndJoinChat() {
@@ -61,6 +62,7 @@ function ChatSpace() {
       const chatSpaceResponse = await fetch(`/api/spaces/${chatSpaceId}`);
       if (chatSpaceResponse.ok) {
         const chatSpaceData = await chatSpaceResponse.json();
+        setCode(chatSpaceData.code);
         const members = chatSpaceData.members;
         const usersMap = {};
         members.forEach((member) => {
@@ -84,6 +86,7 @@ function ChatSpace() {
   return (
     <div>
       <h1>Chat Space {chatSpaceId}</h1>
+      <h2>Join Code: {code}</h2>
       {messages.map((message, index) => (
         <div key={index}>
           <strong>{users[message.user]}:</strong> {message.text}
