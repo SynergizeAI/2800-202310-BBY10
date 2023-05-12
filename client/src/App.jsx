@@ -7,6 +7,9 @@ import Signup from "./components/Signup";
 import ForgotPassword from "./components/ForgotPassword";
 import ResetPassword from "./components/ResetPassword";
 import Logout, { withSetLoggedIn } from "./components/Logout";
+import JoinChatSpaceForm from "./components/chatSpaces/JoinChatSpaceForm";
+import ChatSpace from "./components/chatSpaces/ChatSpace";
+import CreateChatSpaceForm from "./components/chatSpaces/CreateChatSpaceForm";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
@@ -18,12 +21,15 @@ const App = () => {
       <Navbar />
       <Routes>
         <Route exact path="/" element={<Login />} />
-        <Route path="profile" element={<Profile />} />
-        <Route path="login" element={<Login />} />
-        <Route path="signup" element={<Signup />} />
         <Route path="forgot-password" element={<ForgotPassword />} />
         <Route path="/reset-password" element={<ResetPassword />} />
         <Route path="/logout" element={<WrappedLogout />} />
+        <Route path="profile" element={<Profile />} />
+        <Route path="login" element={<Login />} />
+        <Route path="signup" element={<Signup />} />
+        <Route path="joinchat" element={<JoinChatSpaceForm />} />
+        <Route path="space/:id" element={<ChatSpace />} />
+        <Route path="createspace" element={<CreateChatSpaceForm />} />
       </Routes>
     </div>
   );
