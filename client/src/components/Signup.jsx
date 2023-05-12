@@ -1,6 +1,7 @@
 import { useState } from 'react';
 
 function Signup() {
+  const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
@@ -12,7 +13,7 @@ function Signup() {
       const response = await fetch('/api/signup', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email, password }),
+        body: JSON.stringify({ name, email, password }),
       });
 
       if (response.ok) {
@@ -31,6 +32,8 @@ function Signup() {
       <div>
         <h1>Sign Up</h1>
         <form onSubmit={handleSubmit}>
+        <input type="text" value={name} onChange={(e) => setName(e.target.value)} placeholder="Name" />
+          <br />
           <input type="email" value={email} onChange={(e) => setEmail(e.target.value)} placeholder="E-mail" />
           <br />
           <input type="password" value={password} onChange={(e) => setPassword(e.target.value)} placeholder="Password" />
