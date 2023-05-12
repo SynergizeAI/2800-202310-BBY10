@@ -70,26 +70,26 @@ function CustomNavbar({ loggedIn, setLoggedIn }) {
                     Create Chat
                   </NavLink>
                 </Nav.Item>
-                <Nav.Item>
-                  <NavLink
-                    to="/profile"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    Profile
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLink
-                    to="/logout"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    Logout
-                  </NavLink>
-                </Nav.Item>
               </>
             )}
+            <Nav.Item>
+              <NavLink
+                to="/profile"
+                className="nav-link"
+                activeClassName="active"
+              >
+                Profile
+              </NavLink>
+            </Nav.Item>
+            <Nav.Item>
+              <NavLink
+                to="/logout"
+                className="nav-link"
+                activeClassName="active"
+              >
+                Logout
+              </NavLink>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Container>
