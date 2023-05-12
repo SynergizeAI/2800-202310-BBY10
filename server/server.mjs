@@ -4,11 +4,16 @@ import './loadEnvironment.mjs';
 import records from './routes/record.mjs';
 import logins from './routes/login.mjs';
 import signup from './routes/signup.mjs';
+import users from './routes/user.mjs';
+
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
+import cookieParser from 'cookie-parser';
 
 const PORT = process.env.PORT || 5050;
 const app = express();
+
+app.use(cookieParser());  // This line is important!
 
 const corsOptions = {
   origin: 'http://localhost:5173', // Update this to your frontend URL
@@ -46,7 +51,7 @@ app.use(
 app.use('/api/record', records);
 app.use('/api/login', logins);
 app.use('/api/signup', signup);
-//app.use('/api/profile', profile);
+app.use('/api/users', users);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
