@@ -25,6 +25,11 @@ function Login({ onLogin }) {
     navigate('/forgot-password'); // Navigate to the ForgotPassword page
   };
 
+  const handleNewUser = () => {
+    console.log('New User');
+    navigate('/signup');
+  };
+
   return (
     <>
       <div>
@@ -36,10 +41,13 @@ function Login({ onLogin }) {
           <br />
           <button type="submit">Submit</button>
         </form>
+        <br />
+        <button onClick={handleNewUser}>New User?</button>
+        <br />
         <button onClick={handleForgotPassword}>Forgot Password?</button>
       </div>
     </>
-  );
+  );  
 }
 
 export default Login;
