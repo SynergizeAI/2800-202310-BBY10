@@ -8,13 +8,13 @@ function Profile() {
   // Fetch the user data from the API on load
   useEffect(() => {
     const getUserData = async () => {
-      const userID = 'user_id'
       try {
         // Fetch the user data from the API
-        const response = await fetch(`/api/users/${userId}`);
+        const response = await fetch(`/api/users`);
         if (response.ok) {
           // Convert the response to JSON
           const data = await response.json();
+
           // Save the user data to state
           setUserData(data);
           setTempData(data);
@@ -29,30 +29,32 @@ function Profile() {
     getUserData();
   }, []);
 
-  const handleEditing = () => {
+  const handleEdit = () => {
     setEditing(!editing);
   };
 
   const handleSave = async (e) => {
     e.preventDefault();
 
-    const userId = 'user_id';
     try {
       // Save the data to the API
-      const response = await fetch(`/api/users/${userId}`, {
+      const response = await fetch(`/api/users`, {
         method: "PUT",
-        headers: { "Content-Type": "application/json" },
+        headers: {
+          "Content-Type": "application/json",
+        },
         body: JSON.stringify(tempData),
       });
 
       if (response.ok) {
         // Convert the response to JSON
         const data = await response.json();
+
         // Update the user data
         setUserData(data);
         setEditing(false);
       } else {
-        console.error("Something went wrong!");
+        console.error("Something went wrong!", response.statusText);
       }
     } catch (error) {
       console.error(`Error updating data: ${error}`);
@@ -62,7 +64,8 @@ function Profile() {
   return (
     <div>
       <img src={userData.profilePicture} alt="Profile Picture" />
-      <div>{userData.userID}</div>
+      <div>ID: {userData.userId}</div>
+      <div>Email: {userData.email}</div>
       <div>
         {editing ? (
           <input
