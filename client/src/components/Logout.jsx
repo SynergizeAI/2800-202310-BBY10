@@ -11,7 +11,6 @@ function Logout({ setLoggedIn }) {
   const navigate = useNavigate();
 
   const handleLogout = async () => {
-    console.log("pressed button");
     try {
       const response = await fetch('/api/logout', {
         method: 'POST',

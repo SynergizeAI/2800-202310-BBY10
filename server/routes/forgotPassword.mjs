@@ -8,6 +8,7 @@ const router = express.Router();
 const SECRET_KEY = process.env.JWT_SECRET;
 
 router.post('/', async (req, res) => {
+  console.log('POST /forgot-password');
   const { email } = req.body;
 
   let resetToken; // Define resetToken here
@@ -24,7 +25,9 @@ router.post('/', async (req, res) => {
       return;
     }
 
-    resetToken = jwt.sign({ id: user._id }, SECRET_KEY, { expiresIn: '1h' }); // Assign the value here
+    resetToken = jwt.sign({ id: user.userId }, SECRET_KEY, { expiresIn: '1h' }); // Assign the value here
+
+    // const encodedToken = encodeURIComponent(resetToken);
 
     console.log('Updating user with reset token...');
     await usersCollection.updateOne(
@@ -45,8 +48,8 @@ router.post('/', async (req, res) => {
     to: email,
     from: 'dagunthery@gmail.com',
     subject: 'Password Reset',
-    text: `Please click the following link to reset your password: http://localhost:5173/reset-password/${resetToken}`,
-    html: `<strong>Please click the following link to reset your password: <a href="http://localhost:5173/reset-password/${resetToken}">Reset Password</a></strong>`,
+    text: `Please click the following link to reset your password: http://localhost:5173/reset-password?token=${resetToken}`,
+    html: `<strong>Please click the following link to reset your password: <a href="http://localhost:5173/reset-password?token=${resetToken}">Reset Password</a></strong>`,
   };
 
   try {

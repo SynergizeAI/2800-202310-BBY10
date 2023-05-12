@@ -1,10 +1,12 @@
 import { useState } from 'react';
+import {useNavigate} from 'react-router-dom';
 
 function Signup() {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
+  let navigate = useNavigate();
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -17,7 +19,14 @@ function Signup() {
       });
 
       if (response.ok) {
-        alert('User created successfully.');
+        // alert('User created successfully.');
+        await fetch('/api/login', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email, password }),
+        });
+        navigate('/profile');
+
       } else {
         alert('Error creating user. Please try again.');
         console.log(response)
