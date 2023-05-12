@@ -1,55 +1,31 @@
-import React, { useState } from 'react';
-import { Route, Routes } from 'react-router-dom';
-import reactLogo from './assets/react.svg';
-import viteLogo from '/vite.svg';
-import './App.css';
-import Login from './components/Login'
-import Logout from './components/Logout';
-import Signup from './components/Signup';
-import ForgotPassword from './components/ForgotPassword';
-import Navbar from './components/navbar';
-import RecordList from './components/recordList';
-import Edit from './components/edit';
-import Create from './components/create';
-
-function App() {
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [showForgotPassword, setShowForgotPassword] = useState(false);
-
-  const handleLogin = () => {
-    setIsLoggedIn(true);
-  };
-
-  const handleLogout = () => {
-    setIsLoggedIn(false);
-  };
-
-  const handleForgotPassword = () => {
-    setShowForgotPassword(true);
-  };
-
-  const handleCancelForgotPassword = () => {
-    setShowForgotPassword(false);
-  };
-
-  return (
-    <>
-      <Navbar />
-
-      <>
-        {/* <Logout onLogout={handleLogout} /> */}
-        <Routes>
-          <Route exact path="/" element={<RecordList />} />
-          <Route path="/edit/:id" element={<Edit />} />
-          <Route path="/create" element={<Create />} />
-          <Route path="/signup" element={<Signup />} />
-          <Route path="/login" element={<Login />} />
-        </Routes>
-      </>
-
-
-    </>
-  );
-}
-
+import React from "react";
+ 
+// We use Route in order to define the different routes of our application
+import { Route, Routes } from "react-router-dom";
+ 
+// We import all the components we need in our app
+import Navbar from "./components/navbar";
+import RecordList from "./components/recordList";
+import Edit from "./components/edit";
+import Create from "./components/create";
+import Profile from "./components/Profile";
+import Login from "./components/Login";
+import Signup from "./components/Signup";
+ 
+const App = () => {
+ return (
+   <div>
+     <Navbar />
+     <Routes>
+       <Route exact path="/" element={<RecordList />} />
+       <Route path="/edit/:id" element={<Edit />} />
+       <Route path="/create" element={<Create />} />
+       <Route path="profile" element={<Profile />} />
+       <Route path="login" element={<Login />} />
+       <Route path="signup" element={<Signup />} />
+     </Routes>
+   </div>
+ );
+};
+ 
 export default App;

@@ -14,11 +14,12 @@ function Login({ onLogin, onForgotPassword }) {
     });
 
     // If login is successful, call onLogin
-    onLogin();
+    // onLogin();
   };
 
   const handleForgotPassword = () => {
-    onForgotPassword();
+    console.log('forgot password')
+    // onForgotPassword();
   };
 
   return (
