@@ -1,8 +1,11 @@
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
-function Login({ onLogin, onForgotPassword }) {
+function Login({ onLogin }) {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
+
+  const navigate = useNavigate(); // Add this line
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -18,8 +21,8 @@ function Login({ onLogin, onForgotPassword }) {
   };
 
   const handleForgotPassword = () => {
-    console.log('forgot password')
-    // onForgotPassword();
+    console.log('forgot password');
+    navigate('/forgot-password'); // Navigate to the ForgotPassword page
   };
 
   return (
