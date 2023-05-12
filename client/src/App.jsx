@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Profile from "./components/Profile";
@@ -13,6 +13,24 @@ import CreateChatSpaceForm from "./components/chatSpaces/CreateChatSpaceForm";
 
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
+
+  // Define the checkLoggedIn function here
+  const checkLoggedIn = async () => {
+    const response = await fetch("/api/users", {
+      method: "GET",
+      headers: { "Content-Type": "application/json" },
+    });
+    if (response.ok) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  };
+
+  // Call checkLoggedIn whenever App is rendered
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
 
   const WrappedLogout = withSetLoggedIn(Logout, setLoggedIn);
 

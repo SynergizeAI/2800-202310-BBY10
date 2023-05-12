@@ -29,6 +29,8 @@ function Login({ onLogin }) {
       body: JSON.stringify({ username, password }),
     });
     if (response.ok) {
+      //fix this later
+      window.location.reload();
       navigate("/profile");
     } else {
       alert("Login failed.");
