@@ -5,6 +5,9 @@ import records from './routes/record.mjs';
 import logins from './routes/login.mjs';
 import signup from './routes/signup.mjs';
 import users from './routes/user.mjs';
+import forgotPassword from './routes/forgotPassword.mjs'; // Import forgotPassword route
+import resetPassword from './routes/resetPassword.mjs'; // Import resetPassword route
+import logout from './routes/logout.mjs'; // Import logout route
 
 import session from 'express-session';
 import MongoStore from 'connect-mongo';
@@ -52,6 +55,9 @@ app.use('/api/record', records);
 app.use('/api/login', logins);
 app.use('/api/signup', signup);
 app.use('/api/users', users);
+app.use('/api/forgot-password', forgotPassword); // Add forgotPassword route
+app.use('/api/reset-password', resetPassword); // Add resetPassword route
+app.use('/api/logout', logout); // Add logout route
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
