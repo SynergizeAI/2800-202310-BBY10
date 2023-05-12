@@ -11,9 +11,9 @@ import { connectAbly } from "./ably.mjs";
 import chatSpaceRoutes from "./routes/chatSpaceRoutes.mjs";
 import messageRoutes from "./routes/messageRoutes.mjs";
 import ablyAuth from "./routes/ablyAuth.mjs";
-import forgotPassword from './routes/forgotPassword.mjs'; // Import forgotPassword route
-import resetPassword from './routes/resetPassword.mjs'; // Import resetPassword route
-import logout from './routes/logout.mjs'; // Import logout route
+import forgotPassword from "./routes/forgotPassword.mjs"; // Import forgotPassword route
+import resetPassword from "./routes/resetPassword.mjs"; // Import resetPassword route
+import logout from "./routes/logout.mjs"; // Import logout route
 
 import session from "express-session";
 import MongoStore from "connect-mongo";
@@ -21,6 +21,8 @@ import cookieParser from "cookie-parser";
 
 const PORT = process.env.PORT || 5050;
 const app = express();
+
+app.use(express.static(path.resolve(__dirname, "..", "client", "dist")));
 
 try {
   console.log("Connecting to Ably...");
@@ -76,15 +78,21 @@ app.use(
 app.use("/api/record", records);
 app.use("/api/login", logins);
 app.use("/api/signup", signup);
+P;
 app.use("/api/users", users);
 app.use("/api/getusers", getUsers);
 // app.use('/api/users', userRoutes);
 app.use("/api/spaces", chatSpaceRoutes);
 app.use("/api/messages", messageRoutes);
 app.use("/api/ably-auth", ablyAuth);
-app.use('/api/forgot-password', forgotPassword); // Add forgotPassword route
-app.use('/api/reset-password', resetPassword); // Add resetPassword route
-app.use('/api/logout', logout); // Add logout route
+app.use("/api/forgot-password", forgotPassword); // Add forgotPassword route
+app.use("/api/reset-password", resetPassword); // Add resetPassword route
+app.use("/api/logout", logout); // Add logout route
+
+// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
+app.get("*", (req, res) => {
+  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
+});
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
