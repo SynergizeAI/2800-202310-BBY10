@@ -1,5 +1,4 @@
 import { MongoClient } from "mongodb";
-import { createLogger } from "vite";
 
 const connectionString = process.env.ATLAS_URI || "";
 console.log(connectionString);
