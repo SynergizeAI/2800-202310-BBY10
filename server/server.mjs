@@ -22,7 +22,6 @@ import cookieParser from "cookie-parser";
 const PORT = process.env.PORT || 5050;
 const app = express();
 
-app.use(express.static(path.resolve(__dirname, "..", "client", "dist")));
 
 try {
   console.log("Connecting to Ably...");
@@ -89,10 +88,7 @@ app.use("/api/forgot-password", forgotPassword); // Add forgotPassword route
 app.use("/api/reset-password", resetPassword); // Add resetPassword route
 app.use("/api/logout", logout); // Add logout route
 
-// The "catchall" handler: for any request that doesn't match one above, send back React's index.html file.
-app.get("*", (req, res) => {
-  res.sendFile(path.join(__dirname, "../client/dist/index.html"));
-});
+
 
 app.listen(PORT, () => {
   console.log(`Server is running on port: ${PORT}`);
