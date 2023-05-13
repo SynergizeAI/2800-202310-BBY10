@@ -1,43 +1,53 @@
 {
-  "name": "server",
-  "version": "1.0.0",
-  "description": "",
-  "main": "index.js",
+  "name": "2800-202310-bby10",
+  "private": true,
+  "version": "0.0.0",
+  "type": "module",
   "engines": {
-    "node": "17.x"
+    "node": "14.x"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "dev": "vite",
+    "build": "vite build",
+    "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
+    "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
+    "heroku-postbuild": "cd client && npm install && npm run build",
+    "start":  "node index.js"
+
   },
-  "keywords": [],
-  "author": "",
-  "license": "ISC",
   "dependencies": {
-    "cors": "^2.8.5",
-    "dotenv": "^16.0.3",
-    "express": "^4.18.2",
-    "mongodb": "^5.4.0",
-    "uuid": "^9.0.0",
     "@sendgrid/mail": "^7.7.0",
-    "ably": "^1.2.39",
-    "bcrypt": "^5.1.0",
-    "cookie-parser": "^1.4.6",
-    "connect-mongo": "^5.0.0",
-    "jsonwebtoken": "^9.0.0",
-    "nanoid": "^4.0.2",
-    "nodemailer": "^6.9.2",
-    "express-session": "^1.17.3"
+    "dotenv": "^16.0.3",
+    "pg": "^8.10.0",
+    "react": "^18.2.0",
+    "react-dom": "^18.2.0",
+    "react-router-dom": "^6.11.1",
+    "start": "node /index.js",
+    "heroku-postbuild": "cd client && npm install && npm run build"
   },
   "devDependencies": {
-    "@sendgrid/mail": "^7.7.0",
-    "ably": "^1.2.39",
-    "bcrypt": "^5.1.0",
+    "@storybook/addon-essentials": "^7.0.10",
+    "@storybook/addon-interactions": "^7.0.10",
+    "@storybook/addon-links": "^7.0.10",
+    "@storybook/blocks": "^7.0.10",
+    "@storybook/react": "^7.0.10",
+    "@storybook/react-vite": "^7.0.10",
+    "@storybook/testing-library": "^0.1.0",
+    "@types/react": "^18.0.28",
+    "@types/react-dom": "^18.0.11",
+    "@vitejs/plugin-react": "^4.0.0",
     "connect-mongo": "^5.0.0",
-    "cookie-parser": "^1.4.6",
+    "eslint": "^8.38.0",
+    "eslint-plugin-react": "^7.32.2",
+    "eslint-plugin-react-hooks": "^4.6.0",
+    "eslint-plugin-react-refresh": "^0.3.4",
+    "eslint-plugin-storybook": "^0.6.12",
+    "express": "^4.18.2",
     "express-session": "^1.17.3",
-    "express-sesssion": "^1.15.5",
-    "jsonwebtoken": "^9.0.0",
-    "nanoid": "^4.0.2",
-    "nodemailer": "^6.9.2"
+    "prop-types": "^15.8.1",
+    "storybook": "^7.0.10",
+    "vite": "^4.3.2"
   }
 }

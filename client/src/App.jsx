@@ -14,6 +14,28 @@ import CreateChatSpaceForm from "./components/chatSpaces/CreateChatSpaceForm";
 const App = () => {
   const [loggedIn, setLoggedIn] = useState(false);
 
+  // Define the checkLoggedIn function here
+  const checkLoggedIn = async () => {
+    const response = await fetch(
+      "api/users",
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
+    if (response.ok) {
+      setLoggedIn(true);
+    } else {
+      setLoggedIn(false);
+    }
+  };
+
+  // Call checkLoggedIn whenever App is rendered
+  useEffect(() => {
+    checkLoggedIn();
+  }, []);
+
   const WrappedLogout = withSetLoggedIn(Logout, setLoggedIn);
 
   return (

@@ -1,6 +1,6 @@
-const jwt = require('jsonwebtoken');
+import jwt from "jsonwebtoken";
 
-function getUserIdFromToken(token) {
+export default function getUserIdFromToken(token) {
   try {
     const decoded = jwt.verify(token, process.env.JWT_SECRET);
     return decoded.userId;
@@ -11,4 +11,4 @@ function getUserIdFromToken(token) {
   }
 }
 
-module.exports = getUserIdFromToken;
+// module.exports = getUserIdFromToken;

@@ -12,9 +12,10 @@ function Signup() {
   // Make this better
   useEffect(() => {
     const checkLoggedIn = async () => {
-      const response = await fetch("/api/users", {
+      const response = await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/users", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
       });
       if (response.ok) {
         navigate("/profile");
@@ -27,18 +28,20 @@ function Signup() {
     e.preventDefault();
     if (password === confirmPassword) {
       // Send email and password to server for user creation
-      const response = await fetch("/api/signup", {
+      const response = await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, username, email, password }),
+        credentials: 'include',
       });
 
       if (response.ok) {
         // alert('User created successfully.');
-        await fetch("/api/login", {
+        await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, password }),
+          credentials: 'include',
         });
         navigate("/profile");
       } else {
