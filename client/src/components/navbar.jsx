@@ -6,7 +6,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 function CustomNavbar({ loggedIn, setLoggedIn }) {
   useEffect(() => {
     const checkLoggedIn = async () => {
-      const response = await fetch("https://zany-ruby-deer-kit.cyclic.app/api/users", {
+      const response = await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/users", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
