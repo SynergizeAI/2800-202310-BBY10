@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Route, Routes } from "react-router-dom";
 import Navbar from "./components/navbar";
 import Profile from "./components/Profile";
@@ -17,7 +17,7 @@ const App = () => {
   // Define the checkLoggedIn function here
   const checkLoggedIn = async () => {
     const response = await fetch(
-      "https://jellyfish-app-g2qxa.ondigitalocean.app/api/users",
+      "api/users",
       {
         method: "GET",
         headers: { "Content-Type": "application/json" },

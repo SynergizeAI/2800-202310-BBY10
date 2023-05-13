@@ -6,7 +6,7 @@ async function getAblyRealtime(chatSpaceId) {
   let realtime = realtimes.get(chatSpaceId);
   if (!realtime) {
     try {
-      const response = await fetch(`https://jellyfish-app-g2qxa.ondigitalocean.app/api/ably-auth?chatSpaceId=${chatSpaceId}`, {
+      const response = await fetch(`api/ably-auth?chatSpaceId=${chatSpaceId}`, {
         credentials: 'include',
       });
       if (!response.ok) {

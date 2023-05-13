@@ -11,7 +11,7 @@ function Profile() {
       try {
         // Fetch the user data from the API
         const response = await fetch(
-          `https://jellyfish-app-g2qxa.ondigitalocean.app/api/users`, {
+          `api/users`, {
             credentials: 'include',
           }
         );
@@ -43,7 +43,7 @@ function Profile() {
     try {
       // Save the data to the API
       const response = await fetch(
-        `https://jellyfish-app-g2qxa.ondigitalocean.app/api/users`,
+        `api/users`,
         {
           method: "PUT",
           headers: {

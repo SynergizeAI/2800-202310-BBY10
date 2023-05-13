@@ -12,7 +12,7 @@ function Logout({ setLoggedIn }) {
 
   const handleLogout = async () => {
     try {
-      const response = await fetch('https://jellyfish-app-g2qxa.ondigitalocean.app/api/logout', {
+      const response = await fetch('api/logout', {
         method: 'POST',
         credentials: 'include',
       });

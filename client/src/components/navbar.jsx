@@ -7,7 +7,7 @@ function CustomNavbar({ loggedIn, setLoggedIn }) {
   useEffect(() => {
     const checkLoggedIn = async () => {
       const response = await fetch(
-        "https://jellyfish-app-g2qxa.ondigitalocean.app/api/users",
+        "api/users",
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
@@ -74,26 +74,26 @@ function CustomNavbar({ loggedIn, setLoggedIn }) {
                     Create Chat
                   </NavLink>
                 </Nav.Item>
-                <Nav.Item>
-                  <NavLink
-                    to="/profile"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    Profile
-                  </NavLink>
-                </Nav.Item>
-                <Nav.Item>
-                  <NavLink
-                    to="/logout"
-                    className="nav-link"
-                    activeClassName="active"
-                  >
-                    Logout
-                  </NavLink>
-                </Nav.Item>
               </>
             )}
+            <Nav.Item>
+              <NavLink
+                to="/profile"
+                className="nav-link"
+                activeClassName="active"
+              >
+                Profile
+              </NavLink>
+            </Nav.Item>
+            <Nav.Item>
+              <NavLink
+                to="/logout"
+                className="nav-link"
+                activeClassName="active"
+              >
+                Logout
+              </NavLink>
+            </Nav.Item>
           </Nav>
         </Navbar.Collapse>
       </Container>
