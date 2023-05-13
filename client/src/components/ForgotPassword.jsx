@@ -8,7 +8,7 @@ function ForgotPassword({ onCancel }) {
 
     try {
       // Send a request to the backend to initiate the password reset process
-      const response = await fetch('/api/forgot-password', {
+      const response = await fetch('https://zany-ruby-deer-kit.cyclic.app/api/forgot-password', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

@@ -10,7 +10,7 @@ function Profile() {
     const getUserData = async () => {
       try {
         // Fetch the user data from the API
-        const response = await fetch(`/api/users`);
+        const response = await fetch(`https://zany-ruby-deer-kit.cyclic.app/api/users`);
         if (response.ok) {
           // Convert the response to JSON
           const data = await response.json();
@@ -38,7 +38,7 @@ function Profile() {
 
     try {
       // Save the data to the API
-      const response = await fetch(`/api/users`, {
+      const response = await fetch(`https://zany-ruby-deer-kit.cyclic.app/api/users`, {
         method: "PUT",
         headers: {
           "Content-Type": "application/json",

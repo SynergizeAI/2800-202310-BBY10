@@ -9,7 +9,7 @@ function Login({ onLogin }) {
 
   useEffect(() => {
     const checkLoggedIn = async () => {
-      const response = await fetch("/api/users", {
+      const response = await fetch("https://zany-ruby-deer-kit.cyclic.app/api/users", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -23,7 +23,7 @@ function Login({ onLogin }) {
   async function handleSubmit(e) {
     e.preventDefault();
     // send email and password to server for authentication
-    const response = await fetch("/api/login", {
+    const response = await fetch("https://zany-ruby-deer-kit.cyclic.app/api/login", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username, password }),

@@ -12,7 +12,7 @@ function Signup() {
   // Make this better
   useEffect(() => {
     const checkLoggedIn = async () => {
-      const response = await fetch("/api/users", {
+      const response = await fetch("https://zany-ruby-deer-kit.cyclic.app/api/users", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
       });
@@ -27,7 +27,7 @@ function Signup() {
     e.preventDefault();
     if (password === confirmPassword) {
       // Send email and password to server for user creation
-      const response = await fetch("/api/signup", {
+      const response = await fetch("https://zany-ruby-deer-kit.cyclic.app/api/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, username, email, password }),
@@ -35,7 +35,7 @@ function Signup() {
 
       if (response.ok) {
         // alert('User created successfully.');
-        await fetch("/api/login", {
+        await fetch("https://zany-ruby-deer-kit.cyclic.app/api/login", {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, password }),

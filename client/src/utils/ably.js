@@ -6,7 +6,7 @@ async function getAblyRealtime(chatSpaceId) {
   let realtime = realtimes.get(chatSpaceId);
   if (!realtime) {
     try {
-      const response = await fetch(`/api/ably-auth?chatSpaceId=${chatSpaceId}`);
+      const response = await fetch(`https://zany-ruby-deer-kit.cyclic.app/api/ably-auth?chatSpaceId=${chatSpaceId}`);
       if (!response.ok) {
         throw new Error("Failed to fetch token");
       }

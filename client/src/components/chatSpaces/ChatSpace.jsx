@@ -43,7 +43,7 @@ function ChatSpace() {
         await channel.attach();
 
         // Fetch message history from the server
-        const historyResponse = await fetch(`/api/messages/${chatSpaceId}`, {
+        const historyResponse = await fetch(`https://zany-ruby-deer-kit.cyclic.app/api/messages/${chatSpaceId}`, {
           credentials: "include", // to send cookies with the request
         });
         if (historyResponse.ok) {
@@ -59,7 +59,7 @@ function ChatSpace() {
   // Function to fetch and update user details
   const fetchAndSetUsers = async () => {
     try {
-      const chatSpaceResponse = await fetch(`/api/spaces/${chatSpaceId}`);
+      const chatSpaceResponse = await fetch(`https://zany-ruby-deer-kit.cyclic.app/api/spaces/${chatSpaceId}`);
       if (chatSpaceResponse.ok) {
         const chatSpaceData = await chatSpaceResponse.json();
         setCode(chatSpaceData.code);

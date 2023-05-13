@@ -15,7 +15,7 @@ function ResetPassword() {
 
     try {
       // Send a request to the backend to reset the password
-      const response = await fetch("/api/reset-password", {
+      const response = await fetch("https://zany-ruby-deer-kit.cyclic.app/api/reset-password", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
