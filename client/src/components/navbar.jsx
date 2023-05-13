@@ -7,7 +7,7 @@ function CustomNavbar({ loggedIn, setLoggedIn }) {
   useEffect(() => {
     const checkLoggedIn = async () => {
       const response = await fetch(
-        "https://jellyfish-app-g2qxa.ondigitalocean.app/api/users",
+        "api/users",
         {
           method: "GET",
           headers: { "Content-Type": "application/json" },
