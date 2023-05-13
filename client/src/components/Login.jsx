@@ -9,10 +9,14 @@ function Login({ onLogin }) {
 
   useEffect(() => {
     const checkLoggedIn = async () => {
-      const response = await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/users", {
-        method: "GET",
-        headers: { "Content-Type": "application/json" },
-      });
+      const response = await fetch(
+        "https://jellyfish-app-g2qxa.ondigitalocean.app/api/users",
+        {
+          method: "GET",
+          headers: { "Content-Type": "application/json" },
+          credentials: "include",
+        }
+      );
       if (response.ok) {
         navigate("/profile");
       }
@@ -23,11 +27,15 @@ function Login({ onLogin }) {
   async function handleSubmit(e) {
     e.preventDefault();
     // send email and password to server for authentication
-    const response = await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/login", {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify({ username, password }),
-    });
+    const response = await fetch(
+      "https://jellyfish-app-g2qxa.ondigitalocean.app/api/login",
+      {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        credentials: 'include',
+        body: JSON.stringify({ username, password }),
+      }
+    );
     if (response.ok) {
       //fix this later
       window.location.reload();

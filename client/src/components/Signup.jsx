@@ -15,6 +15,7 @@ function Signup() {
       const response = await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/users", {
         method: "GET",
         headers: { "Content-Type": "application/json" },
+        credentials: 'include',
       });
       if (response.ok) {
         navigate("/profile");
@@ -31,6 +32,7 @@ function Signup() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ name, username, email, password }),
+        credentials: 'include',
       });
 
       if (response.ok) {
@@ -39,6 +41,7 @@ function Signup() {
           method: "POST",
           headers: { "Content-Type": "application/json" },
           body: JSON.stringify({ username, password }),
+          credentials: 'include',
         });
         navigate("/profile");
       } else {

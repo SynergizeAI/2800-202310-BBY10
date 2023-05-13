@@ -59,7 +59,9 @@ function ChatSpace() {
   // Function to fetch and update user details
   const fetchAndSetUsers = async () => {
     try {
-      const chatSpaceResponse = await fetch(`https://jellyfish-app-g2qxa.ondigitalocean.app/api/spaces/${chatSpaceId}`);
+      const chatSpaceResponse = await fetch(`https://jellyfish-app-g2qxa.ondigitalocean.app/api/spaces/${chatSpaceId}`, {
+        credentials: 'include',
+      });
       if (chatSpaceResponse.ok) {
         const chatSpaceData = await chatSpaceResponse.json();
         setCode(chatSpaceData.code);

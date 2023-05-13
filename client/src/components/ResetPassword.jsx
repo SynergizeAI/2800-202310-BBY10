@@ -20,6 +20,7 @@ function ResetPassword() {
         headers: {
           "Content-Type": "application/json",
         },
+        credentials: 'include',
         body: JSON.stringify({ token: token, newPassword: password }), // Include the token in the request body
       });
 

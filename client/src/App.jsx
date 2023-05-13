@@ -16,10 +16,14 @@ const App = () => {
 
   // Define the checkLoggedIn function here
   const checkLoggedIn = async () => {
-    const response = await fetch("https://jellyfish-app-g2qxa.ondigitalocean.app/api/users", {
-      method: "GET",
-      headers: { "Content-Type": "application/json" },
-    });
+    const response = await fetch(
+      "https://jellyfish-app-g2qxa.ondigitalocean.app/api/users",
+      {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+        credentials: "include",
+      }
+    );
     if (response.ok) {
       setLoggedIn(true);
     } else {
