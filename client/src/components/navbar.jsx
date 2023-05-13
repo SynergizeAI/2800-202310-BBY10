@@ -1,37 +1,100 @@
-import React from "react";
- 
-// We import bootstrap to make our application look better.
-import 'bootstrap/dist/css/bootstrap.min.css';
- 
-// We import NavLink to utilize the react router.
+import React, { useEffect, useState } from "react";
+import { Navbar, Nav, Container } from "react-bootstrap";
 import { NavLink } from "react-router-dom";
- 
-// Here, we display our Navbar
-function Navbar() {
+import "bootstrap/dist/css/bootstrap.min.css";
+
+function CustomNavbar({ loggedIn, setLoggedIn }) {
+  useEffect(() => {
+    const checkLoggedIn = async () => {
+      const response = await fetch("/api/users", {
+        method: "GET",
+        headers: { "Content-Type": "application/json" },
+      });
+      if (response.ok) {
+        setLoggedIn(true);
+      } else {
+        setLoggedIn(false);
+      }
+    };
+    checkLoggedIn();
+  }, [loggedIn, setLoggedIn]);
+
   return (
-    <nav className="navbar navbar-expand-lg navbar-dark bg-dark">
-      <NavLink exact to="/" className="navbar-brand">Home</NavLink>
-      <button className="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
-        <span className="navbar-toggler-icon"></span>
-      </button>
-      <div className="collapse navbar-collapse" id="navbarNav">
-        <ul className="navbar-nav ml-auto">
-          <li className="nav-item">
-            <NavLink to="/login" className="nav-link" activeClassName="active">Login</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/signup" className="nav-link" activeClassName="active">Sign Up</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/profile" className="nav-link" activeClassName="active">Profile</NavLink>
-          </li>
-          <li className="nav-item">
-            <NavLink to="/logout" className="nav-link" activeClassName="active">Logout</NavLink>
-          </li>
-        </ul>
-      </div>
-    </nav>
+    <Navbar bg="dark" variant="dark" expand="lg">
+      <Container>
+        <NavLink exact to="/" className="navbar-brand">
+          Home
+        </NavLink>
+        <Navbar.Toggle aria-controls="responsive-navbar-nav" />
+        <Navbar.Collapse id="responsive-navbar-nav">
+          <Nav className="ml-auto">
+            {!loggedIn && (
+              <>
+                <Nav.Item>
+                  <NavLink
+                    to="/login"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    Login
+                  </NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink
+                    to="/signup"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    Sign Up
+                  </NavLink>
+                </Nav.Item>
+              </>
+            )}
+            {loggedIn && (
+              <>
+                <Nav.Item>
+                  <NavLink
+                    to="/joinchat"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    Join Chat
+                  </NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink
+                    to="/createspace"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    Create Chat
+                  </NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink
+                    to="/profile"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    Profile
+                  </NavLink>
+                </Nav.Item>
+                <Nav.Item>
+                  <NavLink
+                    to="/logout"
+                    className="nav-link"
+                    activeClassName="active"
+                  >
+                    Logout
+                  </NavLink>
+                </Nav.Item>
+              </>
+            )}
+          </Nav>
+        </Navbar.Collapse>
+      </Container>
+    </Navbar>
   );
 }
 
-export default Navbar;
+export default CustomNavbar;
