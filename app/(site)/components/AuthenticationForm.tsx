@@ -1,6 +1,6 @@
-"use client";
+'use client';
 
-import { useCallback, useState } from "react";
+import { useCallback, useState, useEffect } from "react";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
 import axios from "axios";
 
@@ -8,13 +8,23 @@ import Link from "next/link";
 import { Button } from "@/app/button";
 import { Input } from "@/app/components/inputs/input";
 import { toast } from "react-hot-toast";
-import { signIn } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
+import { useRouter } from "next/navigation";
 
 type FormType = "LOGIN" | "REGISTER";
 
 const AuthenticationForm = () => {
+  const session = useSession();
+  const router = useRouter();
   const [formType, setFormType] = useState<FormType>("LOGIN");
   const [isLoading, setIsLoading] = useState(false);
+
+useEffect(() => {
+  document.title = 'useEffect.tsx';
+  if (session?.status === "authenticated") {
+    router.push('/users');
+  }
+}, [session?.status, router]);
 
   const toggleFormType = useCallback(() => {
     if (formType === "LOGIN") {
@@ -42,6 +52,7 @@ const AuthenticationForm = () => {
     if (formType === "REGISTER") {
       console.log(data);
       axios.post('/api/register', data) 
+      .then(() => signIn('credentials', data))
       .catch(() => toast.error('Something went wrong'))
       .finally(() => setIsLoading(false))
     }
@@ -58,7 +69,8 @@ const AuthenticationForm = () => {
         }
 
         if (callback?.ok && !callback?.error) {
-          toast.success('Logged in!')
+          toast.success('Logged in!');
+          router.push('/users');
         }
       })
       .finally(() => setIsLoading(false));
