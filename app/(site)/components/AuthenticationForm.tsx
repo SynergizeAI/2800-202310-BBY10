@@ -7,6 +7,8 @@ import axios from "axios";
 import Link from "next/link";
 import { Button } from "@/app/button";
 import { Input } from "@/app/components/inputs/input";
+import { toast } from "react-hot-toast";
+import { signIn } from "next-auth/react";
 
 type FormType = "LOGIN" | "REGISTER";
 
@@ -40,12 +42,28 @@ const AuthenticationForm = () => {
     if (formType === "REGISTER") {
       console.log(data);
       axios.post('/api/register', data) 
+      .catch(() => toast.error('Something went wrong'))
+      .finally(() => setIsLoading(false))
     }
 
     if (formType === "LOGIN") {
-      //use nextauth to handle login later
+      signIn('credentiials', {
+        ...data,
+        redirect: false
+      }) 
+      .then((callback) => {
+        if (callback?.error) {
+
+          toast.error('Invalid credentials');
+        }
+
+        if (callback?.ok && !callback?.error) {
+          toast.success('Logged in!')
+        }
+      })
+      .finally(() => setIsLoading(false));
     }
-  };
+  }
 
   return (
     <div>
