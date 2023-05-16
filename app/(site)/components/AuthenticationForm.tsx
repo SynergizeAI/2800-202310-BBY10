@@ -2,6 +2,7 @@
 
 import { useCallback, useState } from "react";
 import { FieldValues, useForm, SubmitHandler } from "react-hook-form";
+import axios from "axios";
 
 import Link from "next/link";
 import { Button } from "@/app/button";
@@ -37,14 +38,14 @@ const AuthenticationForm = () => {
     setIsLoading(true);
 
     if (formType === "REGISTER") {
-      //use axios to handle register later
+      console.log(data);
+      axios.post('/api/register', data) 
     }
 
     if (formType === "LOGIN") {
       //use nextauth to handle login later
     }
   };
-
 
   return (
     <div>
