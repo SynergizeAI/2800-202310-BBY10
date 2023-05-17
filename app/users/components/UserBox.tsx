@@ -5,7 +5,7 @@
  * @param data - The user data
  */
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 import { useCallback, useState } from "react";
 import axios from "axios";
