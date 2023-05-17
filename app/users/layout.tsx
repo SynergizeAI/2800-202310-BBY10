@@ -14,8 +14,10 @@ async function UsersLayout({ children }: { children: React.ReactNode }) {
     //Temp fix until typescript fixes this
     //@ts-expect-error Server Component
     <Sidebar>
-      <UserList users={users} />
-      <div className='h-full'>{children}</div>
+      <div className="h-full">
+        <UserList users={users} />
+        <div className='h-full'>{children}</div>
+      </div>
     </Sidebar>
   );
 }
