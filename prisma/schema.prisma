@@ -1,0 +1,81 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "mongodb"
+  url      = env("DATABASE_URL")
+}
+
+// user model: includes relations to Conversations, Messages and Accounts
+model User {
+  id             String   @id @default(auto()) @map("_id") @db.ObjectId
+  name           String?
+  email          String?  @unique
+  image          String?
+  hashedPassword String?
+  createdAt      DateTime @default(now())
+  updatedAt      DateTime @updatedAt
+
+  // relations for User
+  conversationIds String[]       @db.ObjectId
+  converstations  Conversation[] @relation(fields: [conversationIds], references: [id])
+
+  seenMessageIds String[]  @db.ObjectId
+  seenMessages   Message[] @relation("Seen", fields: [seenMessageIds], references: [id])
+
+  accounts Account[]
+  messages Message[]
+}
+
+// Account model: Represents external or third-party accounts, includes tokens, token expiry time, token type, scope, id_token, and session state.
+model Account {
+  id            String  @id @default(auto()) @map("_id") @db.ObjectId
+  userId        String  @db.ObjectId
+  type          String
+  refresh_token String? @db.String
+  access_token  String? @db.String
+  expires_at    Int?
+  token_type    String?
+  scope         String?
+  id_token      String? @db.String
+  session_state String?
+
+  // If a user is deleted, all associated accounts are also deleted.
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+// conversation model: includes convo name, a isGroup, timestamps, messagesIds.
+model Conversation {
+  id            String   @id @default(auto()) @map("_id") @db.ObjectId
+  createdAt     DateTime @default(now())
+  lastMessageAt DateTime @default(now())
+  name          String?
+  isGroup       Boolean?
+
+  messagesIds String[]  @db.ObjectId
+  messages    Message[]
+
+  // group convo by connecting multiple usersIds.
+  userIds String[] @db.ObjectId
+  users   User[]   @relation(fields: [userIds], references: [id])
+}
+
+// message model: includes text body, image url, timestamp.
+model Message {
+  id        String   @id @default(auto()) @map("_id") @db.ObjectId
+  body      String?
+  image     String?
+  createdAt DateTime @default(now())
+
+  // tracks which users have seen the message.
+  seenIds String[] @db.ObjectId
+  seen    User[]   @relation("Seen", fields: [seenIds], references: [id])
+
+  // tracks the conversation and sender of the message.
+  conversationId String       @db.ObjectId
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+
+  senderId String @db.ObjectId
+  sender   User   @relation(fields: [senderId], references: [id], onDelete: Cascade)
+}
