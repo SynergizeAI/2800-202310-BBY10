@@ -1,3 +1,9 @@
+/**
+ * handles the registration of the user
+ * @NextResponse https://nextjs.org/docs/app/api-reference/functions/next-response
+ * @returns user object or error if not successful
+ */
+
 import bcrypt from "bcrypt";
 
 import prisma from "@/app/libs/prismadb";
