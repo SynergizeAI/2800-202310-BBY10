@@ -69,7 +69,7 @@ const AuthenticationForm = () => {
     }
 
     if (formType === "LOGIN") {
-      signIn("credentiials", {
+      signIn("credentials", {
         ...data,
         redirect: false,
       })

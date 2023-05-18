@@ -5,11 +5,12 @@
  * @param data - The user data
  */
 
-import { useRouter } from "next/router";
+import { useRouter } from "next/navigation";
 import { User } from "@prisma/client";
 import { useCallback, useState } from "react";
 import axios from "axios";
 import Avatar from "@/app/components/Avatar";
+import LoadingModal from "@/app/components/LoadingModal";
 
 interface UserBoxProps {
   data: User;
@@ -33,6 +34,10 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
   }, [data, router]);
 
   return (
+    <>
+    {isLoading && (
+        <LoadingModal />
+      )}
     <div
       onClick={handleClick}
       className='w-full relative flex items-center space-x-3 bg-white p-3 hover:bg-neutral-100 rounded-lg transition cursor-pointer'>
@@ -47,6 +52,7 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
         </div>
       </div>
     </div>
+        </>
   );
 };
 
