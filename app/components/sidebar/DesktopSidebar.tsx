@@ -5,11 +5,20 @@ import { User } from "@prisma/client";
 import { useState } from "react";
 import NavItem from "./NavItem";
 import Avatar from "../Avatar";
+import SettingsModal from "./SettingsModal";
 
+
+// Define the properties of the DesktopSidebar component
 interface DesktopSidebarProps {
   currentUser: User;
 }
-
+/**
+ * The DesktopSidebar component displays the desktop version of the sidebar with navigation items and user settings.
+ *
+ * @param {object} props - The properties for the component.
+ * @param {User} props.currentUser - The current logged-in user.
+ * @returns {JSX.Element} The rendered component.
+ */
 const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
   const routes = useRoutes();
   const [isOpen, setIsOpen] = useState(false);
