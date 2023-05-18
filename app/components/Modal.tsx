@@ -10,6 +10,11 @@ interface ModalProps {
   children: React.ReactNode;
 }
 
+/**
+ * Modal component renders a modal dialog.
+ * @param {ModalProps} props - The props object containing isOpen, onClose, and children.
+ * @returns {JSX.Element} The Modal component.
+ */
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>

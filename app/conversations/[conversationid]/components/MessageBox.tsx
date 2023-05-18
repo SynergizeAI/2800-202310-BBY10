@@ -7,6 +7,7 @@ import { useState } from "react";
 import { format } from "date-fns"; // library for manipulating JS dates
 import { useSession } from "next-auth/react";
 import Avatar from "@/app/components/Avatar";
+import ImageModal from "./ImageModal";
 
 // Import FullMessageType from types
 import { FullMessageType } from "@/app/types";
@@ -25,6 +26,7 @@ const MessageBox: React.FC<{data: FullMessageType, isLast?: boolean}> = ({
 }) => {
   // Get current user's session
   const session = useSession();
+  
 
   // State for controlling the opening and closing of the image modal
   const [imageModalOpen, setImageModalOpen] = useState(false);
@@ -64,6 +66,7 @@ const MessageBox: React.FC<{data: FullMessageType, isLast?: boolean}> = ({
           </div>
         </div>
         <div className={message}>
+        <ImageModal src={data.image} isOpen={imageModalOpen} onClose={() => setImageModalOpen(false)} />
           {data.image ? (
             <Image
               alt="Image"
