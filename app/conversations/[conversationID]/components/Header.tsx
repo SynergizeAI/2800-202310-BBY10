@@ -1,58 +1,34 @@
-/**
- * Header.tsx
- * This component renders the header for a conversation in a chat application.
- * It displays information such as the conversation name, participants,
- * and their active status. It also includes a profile drawer for more details.
- */
+// client-side scripting
+'use client';
 
-// Import necessary libraries and components
-import { HiChevronLeft } from 'react-icons/hi';
+import { HiChevronLeft} from 'react-icons/hi';
 import { HiEllipsisHorizontal } from 'react-icons/hi2';
-import { useMemo, useState } from 'react';
-import Link from 'next/link';
-import { Conversation, User } from '@prisma/client';
+import { useState } from "react";
+import Link from "next/link";
+import useOtherUser from "@/app/hooks/useOtherUser";
+import Avatar from "@/app/components/Avatar";
 
-import useOtherUser from '@/app/hooks/useOtherUser';
-import useActiveList from '@/app/hooks/useActiveList';
+// Import Conversation and User types from Prisma client
+import { Conversation, User } from "@prisma/client";
 
-import Avatar from '@/app/components/Avatar';
-import AvatarGroup from '@/app/components/AvatarGroup';
-import ProfileDrawer from './ProfileDrawer';
-
-// Define the component props
-interface HeaderProps {
-  conversation: Conversation & {
-    users: User[];
-  };
-}
-
-// Define the Header component
-const Header: React.FC<HeaderProps> = ({ conversation }) => {
-  // Use custom hooks to get other users in the conversation and active members
+/**
+ * Header component for displaying conversation details.
+ * 
+ * @param {Object} props - Component properties.
+ * @param {Conversation & {users: User[]}} props.conversation - Conversation object including array of users.
+ * @returns {React.FC} The header component.
+ */
+const Header: React.FC<{conversation: Conversation & {users: User[]}}> = ({ conversation }) => {
+  // Get the other user in the conversation
   const otherUser = useOtherUser(conversation);
+
+  // State for controlling the opening and closing of the drawer
   const [drawerOpen, setDrawerOpen] = useState(false);
 
-  const { members } = useActiveList();
-  const isActive = members.indexOf(otherUser?.email!) !== -1;
-
-  // Compute the status text based on conversation type and active status
-  const statusText = useMemo(() => {
-    if (conversation.isGroup) {
-      return `${conversation.users.length} members`;
-    }
-
-    return isActive ? 'Active' : 'Offline';
-  }, [conversation, isActive]);
-
-  // Render the header component
+  // Render the component
   return (
     <>
-      <ProfileDrawer
-        data={conversation}
-        isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
-      />
-      <div
+      <div 
         className="
           bg-white 
           w-full 
@@ -68,9 +44,8 @@ const Header: React.FC<HeaderProps> = ({ conversation }) => {
         "
       >
         <div className="flex gap-3 items-center">
-          {/* Render back arrow for smaller screens */}
           <Link
-            href="/conversations"
+            href="/conversations" 
             className="
               lg:hidden 
               block 
@@ -82,21 +57,12 @@ const Header: React.FC<HeaderProps> = ({ conversation }) => {
           >
             <HiChevronLeft size={32} />
           </Link>
-          {/* Render either AvatarGroup or single Avatar depending on conversation type */}
-          {conversation.isGroup ? (
-            <AvatarGroup users={conversation.users} />
-          ) : (
-            <Avatar user={otherUser} />
-          )}
-          {/* Render conversation name and status text */}
           <div className="flex flex-col">
             <div>{conversation.name || otherUser.name}</div>
             <div className="text-sm font-light text-neutral-500">
-              {statusText}
             </div>
           </div>
         </div>
-        {/* Render ellipsis icon to open ProfileDrawer */}
         <HiEllipsisHorizontal
           size={32}
           onClick={() => setDrawerOpen(true)}
@@ -110,7 +76,6 @@ const Header: React.FC<HeaderProps> = ({ conversation }) => {
       </div>
     </>
   );
-};
-
-// Export the Header component
+}
+ 
 export default Header;
