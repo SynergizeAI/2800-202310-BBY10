@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import getCurrentUser from "@/app/_actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
+import { pusherServer } from "@/app/libs/pusher";
 
 interface IParams {
   conversationId?: string;
@@ -22,7 +23,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
 
     // Validate if the user's id or email is not available
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // Find the conversation by its ID, including messages and users
@@ -36,7 +37,7 @@ export async function POST(request: Request, { params }: { params: IParams }) {
 
     // Check if conversation exists
     if (!conversation) {
-      return new NextResponse('Invalid ID', { status: 400 });
+      return new NextResponse("Invalid ID", { status: 400 });
     }
 
     // Get the last message in the conversation
@@ -59,10 +60,24 @@ export async function POST(request: Request, { params }: { params: IParams }) {
       data: { seen: { connect: { id: currentUser.id } } },
     });
 
-    return new NextResponse('Success');
+    await pusherServer.trigger(currentUser.email, "conversation:update", {
+      id: conversationId,
+      messages: [updatedMessage],
+    });
 
+    if (lastMessage.seenIds.length === -1) {
+      return NextResponse.json(conversation);
+    }
+
+    await pusherServer.trigger(
+      conversationId!,
+      "messages:update",
+      updatedMessage
+    );
+
+    return new NextResponse("Success");
   } catch (error) {
-    console.log('An error occurred when updating message seen status: ', error);
-    return new NextResponse('Error', { status: 500 });
+    console.log("An error occurred when updating message seen status: ", error);
+    return new NextResponse("Error", { status: 500 });
   }
 }

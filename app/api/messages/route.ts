@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import getCurrentUser from "@/app/_actions/getCurrentUser";
 import prisma from "@/app/libs/prismadb";
+import { pusherServer } from "@/app/libs/pusher";
 
 /**
  * Handles a POST request to create a new message in a conversation.
@@ -8,7 +9,7 @@ import prisma from "@/app/libs/prismadb";
  * @param {Request} request - The HTTP request.
  * @returns {Promise<NextResponse>} The response to send back to the client.
  */
-export async function POST(request: Request,) {
+export async function POST(request: Request) {
   try {
     // Get current user
     const currentUser = await getCurrentUser();
@@ -19,7 +20,7 @@ export async function POST(request: Request,) {
 
     // Validate if the user's id or email is not available
     if (!currentUser?.id || !currentUser?.email) {
-      return new NextResponse('Unauthorized', { status: 401 });
+      return new NextResponse("Unauthorized", { status: 401 });
     }
 
     // Create a new message, including seen and sender
@@ -31,7 +32,7 @@ export async function POST(request: Request,) {
         conversation: { connect: { id: conversationId } },
         sender: { connect: { id: currentUser.id } },
         seen: { connect: { id: currentUser.id } },
-      }
+      },
     });
 
     // Update the conversation with the new message and the last message timestamp
@@ -39,20 +40,31 @@ export async function POST(request: Request,) {
       where: { id: conversationId },
       data: {
         lastMessageAt: new Date(),
-        messages: { connect: { id: newMessage.id } }
+        messages: { connect: { id: newMessage.id } },
       },
       include: {
         users: true,
         messages: { include: { seen: true } },
-      }
+      },
+    });
+
+    await pusherServer.trigger(conversationId, "messages:new", newMessage);
+
+    const lastMessage =
+      updatedConversation.messages[updatedConversation.messages.length - 1];
+
+    updatedConversation.users.map((user) => {
+      pusherServer.trigger(user.email!, "conversation:update", {
+        id: conversationId,
+        messages: [lastMessage],
+      });
     });
 
     // No need to get the last message here as we just created it
     // Return the new message as response
     return NextResponse.json(newMessage);
-
   } catch (error) {
-    console.log('An error occurred when posting a new message: ', error);
-    return new NextResponse('Error', { status: 500 });
+    console.log("An error occurred when posting a new message: ", error);
+    return new NextResponse("Error", { status: 500 });
   }
 }

@@ -8,6 +8,7 @@
 import getCurrentUser from "@/app/_actions/getCurrentUser";
 import { NextResponse } from "next/server";
 import prisma from "@/app/libs/prismadb";
+import { pusherServer } from "@/app/libs/pusher";
 
 type Member = { value: string };
 type User = { id: string };
@@ -106,6 +107,13 @@ export async function POST(request: Request) {
         members,
         currentUser
       );
+
+      newConversation.users.forEach((user) => {
+        if (user.email) {
+          pusherServer.trigger(user.email, "conversation:new", newConversation);
+        }
+      });
+
       return NextResponse.json(newConversation);
     }
 
@@ -117,6 +125,13 @@ export async function POST(request: Request) {
     }
 
     const newConversation = await createSingleConversation(userId, currentUser);
+
+    newConversation.users.forEach((user) => {
+      if (user.email) {
+        pusherServer.trigger(user.email, "conversation:new", newConversation);
+      }
+    });
+
     return NextResponse.json(newConversation);
   } catch (error: any) {
     console.log(error, "GET_USERS_ERROR");
