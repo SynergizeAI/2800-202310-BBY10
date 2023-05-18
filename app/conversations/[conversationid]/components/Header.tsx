@@ -7,6 +7,8 @@ import { useState } from "react";
 import Link from "next/link";
 import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/app/components/Avatar";
+import AvatarGroup from "@/app/components/AvatarGroup";
+
 
 // Import Conversation and User types from Prisma client
 import { Conversation, User } from "@prisma/client";
@@ -57,6 +59,11 @@ const Header: React.FC<{conversation: Conversation & {users: User[]}}> = ({ conv
           >
             <HiChevronLeft size={32} />
           </Link>
+          {conversation.isGroup ? (
+          <AvatarGroup users={conversation.users} />
+        ) : (
+          <Avatar user={otherUser} />
+        )}
           <div className="flex flex-col">
             <div>{conversation.name || otherUser.name}</div>
             <div className="text-sm font-light text-neutral-500">
