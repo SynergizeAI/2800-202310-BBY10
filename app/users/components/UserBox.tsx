@@ -35,24 +35,20 @@ const UserBox: React.FC<UserBoxProps> = ({ data }) => {
 
   return (
     <>
-    {isLoading && (
-        <LoadingModal />
-      )}
-    <div
-      onClick={handleClick}
-      className='w-full relative flex items-center cursor-pointer'>
-      <Avatar user={data} />
-      <div className='min-w-0 flex-1'>
-        <div className='focus:outline-none'>
-          <div className='flex justify-between items-center mb-1'>
-            <p className='truncate'>
-              {data.name}
-            </p>
+      {isLoading && <LoadingModal />}
+      <div
+        onClick={handleClick}
+        className='w-full relative flex items-center cursor-pointer mb-3 hover:bg-slate-100'>
+        <Avatar user={data} />
+        <div className='min-w-0 flex-1 pl-4'>
+          <div className='focus:outline-none'>
+            <div className='flex justify-between items-center mb-1'>
+              <p className='truncate'>{data.name}</p>
+            </div>
           </div>
         </div>
       </div>
-    </div>
-        </>
+    </>
   );
 };
 

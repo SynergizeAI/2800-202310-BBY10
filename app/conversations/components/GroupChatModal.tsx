@@ -79,7 +79,8 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
             <h2 
               className="
                 text-base 
-                leading-7 
+                leading-7
+                font-semibold
               "
               >
                 Create a group chat
@@ -116,7 +117,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
             disabled={isLoading}
             onClick={onClose} 
             type="button"
-            secondary
+            variant='outline'
           >
             Cancel
           </Button>

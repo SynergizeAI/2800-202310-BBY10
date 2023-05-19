@@ -65,7 +65,7 @@ export async function POST(request: Request) {
     });
 
     let botResponsePromise;
-    if (message.startsWith("@flo")) {
+    if (message! && message.startsWith("@flo")) {
       // remove first word
       const command = message.split(" ").slice(1).join(" ");
       // console.log("command", command);
@@ -85,7 +85,9 @@ export async function POST(request: Request) {
     // Return the new message as response
     const response = NextResponse.json(newMessage);
 
-    await upsert(message, newMessage.id, conversationId, currentUser.name);
+    if (message!) {
+      await upsert(message, newMessage.id, conversationId, currentUser.name);
+    }
 
     // If a bot response is being generated, wait for it to finish
     if (botResponsePromise) {

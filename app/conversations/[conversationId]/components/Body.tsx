@@ -96,7 +96,7 @@ const Body: React.FC<{ initialMessages: FullMessageType[] }> = ({
 
   // Render the component
   return (
-    <div className='flex-1 overflow-y-auto'>
+    <div className='flex-1 overflow-y-auto border-b '>
       {/* Loop over the messages and display each one */}
       {messages.map((message, i) => (
         <MessageBox
