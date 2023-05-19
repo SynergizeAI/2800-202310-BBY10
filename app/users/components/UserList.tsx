@@ -14,10 +14,10 @@ interface UserListProps {
 
 const UserList: React.FC<UserListProps> = ({ users }) => {
   return (
-    <aside className='fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r block w-full left-0'>
-      <div className='px-5'>
+    <aside className='fixed inset-y-0 pb-20 lg:pb-0 lg:left-20 lg:w-80 lg:block overflow-y-auto border-r block w-full left-0 bg-slate-50'>
+      <div className='px-5 p-4'>
         <div className='flex-col'>
-          <div className=''>Users</div>
+          <div className='pb-4 text-lg font-semibold'>Users</div>
         </div>
         {users.map((user) => (
           <UserBox key={user.id} data={user} />

@@ -24,7 +24,6 @@ import useOtherUser from "@/app/hooks/useOtherUser";
 import Avatar from "@/app/components/Avatar";
 import AvatarGroup from "@/app/components/AvatarGroup";
 
-
 interface ConversationBoxProps {
   data: FullConversationType;
   selected?: boolean;
@@ -80,7 +79,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     <div
       onClick={handleClick}
       className={clsx(
-        "w-full relative flex items-center space-x-3",
+        "w-full relative flex items-center space-x-3 p-1 hover:bg-slate-100 cursor-pointer mb-3"
       )}>
       {/* Display the avatar of the other user */}
       {data.isGroup ? (
@@ -92,24 +91,20 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
         <div className='focus:outline-none'>
           <div className='flex justify-between items-center mb-1'>
             {/* Display the conversation name or the other user's name if no conversation name is set */}
-            <p className='truncate'>
+            <p className='truncate font-medium'>
               {data.name || otherUser.name}
             </p>
 
-            {/* display its creation time if there is a last message, */}
             {lastMessage?.createdAt && (
-              <p>
+              <p className='font-light text-sm'>
                 {format(new Date(lastMessage.createdAt), "p")}
               </p>
             )}
           </div>
 
           {/* display the last message */}
-          <p
-            className={clsx(
-              "truncate"
-            )}>
-            {lastMessageText}
+          <p className={clsx("truncate font-light text-sm")}>
+            {lastMessage! && lastMessage?.sender.name + ": "} {lastMessageText}
           </p>
         </div>
       </div>

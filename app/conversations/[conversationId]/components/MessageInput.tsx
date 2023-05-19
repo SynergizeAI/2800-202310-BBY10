@@ -49,6 +49,8 @@ const MessageInput: React.FC<{
           py-2
           px-4
           w-full 
+          bg-gray-100
+          rounded-xl
         " // Styling the input field
       />
     </div>
