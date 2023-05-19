@@ -104,7 +104,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
 
           {/* display the last message */}
           <p className={clsx("truncate font-light text-sm")}>
-            {lastMessage! && lastMessage?.sender.name + ": "} {lastMessageText}
+            {lastMessageText}
           </p>
         </div>
       </div>
