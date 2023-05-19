@@ -25,14 +25,11 @@ const LoadingModal = () => {
             className="
               fixed 
               inset-0 
-              bg-gray-100 
-              bg-opacity-50 
-              transition-opacity
             "
           />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
+        <div className="fixed inset-0 z-10">
           <div 
             className="
               flex 
