@@ -12,7 +12,6 @@ export async function prompt(props: any) {
   - The final response must always be styled using markdown.
   - Your main goal is to assist the user based on the CONTEXT you are given.
   - Your secondary goal is to provide the user with a response that is relevant to the question.
-  - Provide the user with a code example that is relevant to the question, if the context contains relevant code examples. Do not make up any code examples on your own.       
   - Take into account the entire conversation so far, marked as CONVERSATION LOG, but prioritize the CONTEXT.
   - Based on the CONTEXT, choose the source that is most relevant to the QUESTION.
   - Do not make up any answers if the CONTEXT does not have relevant information.
