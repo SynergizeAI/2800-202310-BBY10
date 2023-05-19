@@ -169,7 +169,7 @@ async function generateBotResponse(
       body: botResponse,
       image: image,
       conversation: { connect: { id: conversationId } },
-      sender: { connect: { id: "64648a2b0a9a533e1373b18e" } },
+      sender: { connect: { id: "6467e41941444b67048c2532" } },
       seen: { connect: { id: currentUser.id } },
     },
   });
