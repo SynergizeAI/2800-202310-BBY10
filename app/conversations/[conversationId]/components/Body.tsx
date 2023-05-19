@@ -9,6 +9,7 @@ import MessageBox from "./MessageBox";
 import { FullMessageType } from "@/app/types";
 import { pusherClient } from "@/app/libs/pusher";
 import { find } from "lodash";
+import clsx from "clsx";
 
 /**
  * Component for displaying the body of a conversation.
@@ -24,6 +25,8 @@ const Body: React.FC<{ initialMessages: FullMessageType[] }> = ({
 
   // State for the list of messages
   const [messages, setMessages] = useState(initialMessages);
+
+  const [botIsTyping, setBotIsTyping] = useState(false);
 
   // Get the conversation ID from the conversation context
   const { conversationId } = useConversation();
@@ -50,52 +53,46 @@ const Body: React.FC<{ initialMessages: FullMessageType[] }> = ({
 
         return [...current, message];
       });
-
-      bottomRef?.current?.scrollIntoView();
     };
 
     const updateMessageHandler = (newMessage: FullMessageType) => {
-      setMessages((current) =>
-        current.map((currentMessage) => {
-          if (currentMessage.id === newMessage.id) {
+      // Update the message in the state
+      setMessages((currentMessages) =>
+        currentMessages.map((message) => {
+          // Replace the message if its ID matches the new message's ID
+          if (message.id === newMessage.id) {
             return newMessage;
           }
 
-          return currentMessage;
+          // Otherwise, return the message as is
+          return message;
         })
       );
     };
 
+    const botTypingHandler = (data: { isTyping: boolean }) => {
+      // Use the "isTyping" property to trigger the typing animation
+      setBotIsTyping(data.isTyping);
+      // console.log("bot is typing", data.isTyping);
+    };
+
+    pusherClient.bind("bot:typing", botTypingHandler);
     pusherClient.bind("messages:new", messageHandler);
     pusherClient.bind("messages:update", updateMessageHandler);
 
     // unmount
     return () => {
       pusherClient.unsubscribe(conversationId);
+      pusherClient.unbind("bot:typing", botTypingHandler);
       pusherClient.unbind("messages:new", messageHandler);
       pusherClient.unbind("messages:update", updateMessageHandler);
     };
   }, [conversationId]);
 
-  /**
-   * Handler for updating a message.
-   *
-   * @param {Object} newMessage - The updated message.
-   */
-  const updateMessageHandler = (newMessage: FullMessageType) => {
-    // Update the message in the state
-    setMessages((currentMessages) =>
-      currentMessages.map((message) => {
-        // Replace the message if its ID matches the new message's ID
-        if (message.id === newMessage.id) {
-          return newMessage;
-        }
-
-        // Otherwise, return the message as is
-        return message;
-      })
-    );
-  };
+  // Effect to scroll to the bottom of the message list whenever a new message is added
+  useEffect(() => {
+    bottomRef.current?.scrollIntoView();
+  }, [messages]);
 
   // Render the component
   return (
@@ -106,10 +103,12 @@ const Body: React.FC<{ initialMessages: FullMessageType[] }> = ({
           isLast={i === messages.length - 1}
           key={message.id}
           data={message}
+          ref={i === messages.length - 1 ? bottomRef : null}
         />
       ))}
-      {/* Reference to the bottom of the message list */}
-      <div className='pt-24' ref={bottomRef} />
+      <div className={clsx(botIsTyping ? "visible" : "invisible")}>
+        <div className='text-gray-500 pl-2 pb-2'>flo is typing...</div>
+      </div>
     </div>
   );
 };
