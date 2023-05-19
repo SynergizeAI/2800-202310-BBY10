@@ -28,6 +28,7 @@ interface MessageBoxProps {
 
 const MessageBox = React.forwardRef<HTMLDivElement, MessageBoxProps>(
   ({ data, isLast }, ref) => {
+    MessageBox.displayName = 'MessageBox';
     // Get current user's session
     const session = useSession();
 
