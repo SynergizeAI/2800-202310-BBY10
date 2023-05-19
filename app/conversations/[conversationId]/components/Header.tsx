@@ -49,11 +49,11 @@ const Header: React.FC<{ conversation: Conversation & { users: User[] } }> = ({
         isOpen={drawerOpen}
         onClose={() => setDrawerOpen(false)}
       />
-      <div className=' bg-white  w-full  flex  border-b-[1px]  sm:px-4  py-3  px-4  lg:px-6  justify-between  items-center  shadow-sm '>
+      <div className=' w-full  flex  border-b-[1px]  sm:px-4  py-3  px-4  lg:px-6  justify-between  items-center'>
         <div className='flex gap-3 items-center'>
           <Link
             href='/conversations'
-            className=' lg:hidden  block  text-sky-500  hover:text-sky-600  transition  cursor-pointer '>
+            className='lg:hidden  block'>
             <HiChevronLeft size={32} />
           </Link>
           {conversation.isGroup ? (
@@ -63,7 +63,7 @@ const Header: React.FC<{ conversation: Conversation & { users: User[] } }> = ({
           )}
           <div className='flex flex-col'>
             <div>{conversation.name || otherUser.name}</div>
-            <div className='text-sm font-light text-neutral-500'>
+            <div className=''>
               {statusText}
             </div>
           </div>
@@ -71,7 +71,7 @@ const Header: React.FC<{ conversation: Conversation & { users: User[] } }> = ({
         <HiEllipsisHorizontal
           size={32}
           onClick={() => setDrawerOpen(true)}
-          className=' text-sky-500 cursor-pointer hover:text-sky-600 transition '
+          className=''
         />
       </div>
     </>
