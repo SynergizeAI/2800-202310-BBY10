@@ -25,10 +25,10 @@ const NavItem: React.FC<NavItemProps> = (props) => {
       onClick={handleClick}
       href={href}
       className={clsx(
-        "flex gap-x-3 text-sm leading-6 font-semibold justify-center p-3 text-gray-500 hover:text-black",
-        active && "bg-gray-100 text-black",
-        mobile && "w-full p-4 hover:bg-gray-100",
-        !mobile && "hover:bg-gray-10 rounded-md"
+        "flex gap-x-3  justify-center p-3",
+        active && "",
+        mobile && "w-full p-4",
+        !mobile && ""
       )}>
       <Icon className='h-6 w-6' />
     </Link>
