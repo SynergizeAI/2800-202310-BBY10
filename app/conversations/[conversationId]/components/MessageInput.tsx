@@ -46,14 +46,9 @@ const MessageInput: React.FC<{
         {...register(id, { required })} // Using react-hook-form's register function to register the input field
         placeholder={placeholder} // Placeholder text for the input field
         className="
-          text-black
-          font-light
           py-2
           px-4
-          bg-neutral-100 
           w-full 
-          rounded-full
-          focus:outline-none
         " // Styling the input field
       />
     </div>

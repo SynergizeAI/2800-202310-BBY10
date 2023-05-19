@@ -80,8 +80,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
     <div
       onClick={handleClick}
       className={clsx(
-        "w-full relative flex items-center space-x-3 hover:bg-neutral-100 rounded-lg transition cursor-pointer",
-        selected ? "bg-neutral-100" : "bg-white"
+        "w-full relative flex items-center space-x-3",
       )}>
       {/* Display the avatar of the other user */}
       {data.isGroup ? (
@@ -93,13 +92,13 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
         <div className='focus:outline-none'>
           <div className='flex justify-between items-center mb-1'>
             {/* Display the conversation name or the other user's name if no conversation name is set */}
-            <p className='text-sm font-medium text-neutral-900 truncate'>
+            <p className='truncate'>
               {data.name || otherUser.name}
             </p>
 
             {/* display its creation time if there is a last message, */}
             {lastMessage?.createdAt && (
-              <p className='text-xs text-gray-400 font-light'>
+              <p>
                 {format(new Date(lastMessage.createdAt), "p")}
               </p>
             )}
@@ -108,8 +107,7 @@ const ConversationBox: React.FC<ConversationBoxProps> = ({
           {/* display the last message */}
           <p
             className={clsx(
-              "truncate text-sm",
-              hasSeen ? "text-gray-500" : "text-black font-medium"
+              "truncate"
             )}>
             {lastMessageText}
           </p>

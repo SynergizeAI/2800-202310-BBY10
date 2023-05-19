@@ -61,16 +61,11 @@ interface ConfirmModalProps {
               flex-shrink-0 
               items-center 
               justify-center 
-              rounded-full 
-              bg-red-100 
-              sm:mx-0 
-              sm:h-10 
-              sm:w-10
             "
           >
             {/* Alert icon */}
             <FiAlertTriangle 
-              className="h-6 w-6 text-red-600" 
+              className="" 
               aria-hidden="true"
             />
           </div>
@@ -86,7 +81,7 @@ interface ConfirmModalProps {
             {/* Modal title */}
             <Dialog.Title 
               as="h3" 
-              className="text-base font-semibold leading-6 text-gray-900"
+              className="text-base leading-6"
             >
               Delete conversation
             </Dialog.Title>

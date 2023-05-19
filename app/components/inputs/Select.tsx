@@ -27,10 +27,7 @@ const Select: React.FC<SelectProps> = ({
       <label
         className="
           block 
-          text-sm 
-          font-medium 
-          leading-6 
-          text-gray-900
+          text-sm
         "
       >
         {label}
