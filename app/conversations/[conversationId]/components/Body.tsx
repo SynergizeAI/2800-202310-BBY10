@@ -73,7 +73,7 @@ const Body: React.FC<{ initialMessages: FullMessageType[] }> = ({
     const botTypingHandler = (data: { isTyping: boolean }) => {
       // Use the "isTyping" property to trigger the typing animation
       setBotIsTyping(data.isTyping);
-      console.log("bot is typing", data.isTyping);
+      // console.log("bot is typing", data.isTyping);
     };
 
     pusherClient.bind("bot:typing", botTypingHandler);

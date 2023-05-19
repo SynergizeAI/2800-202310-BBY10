@@ -30,7 +30,7 @@ export async function query(message: string, conversationId: string) {
     },
   });
 
-  console.log("queryResponse", queryResponse)
+  // console.log("queryResponse", queryResponse)
 
   return queryResponse.matches;
 }

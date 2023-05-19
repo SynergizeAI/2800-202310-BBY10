@@ -60,7 +60,7 @@ const AuthenticationForm = () => {
     setIsLoading(true);
 
     if (formType === "REGISTER") {
-      console.log(data);
+      // console.log(data);
       axios
         .post("/api/register", data)
         .then(() => signIn("credentials", data))
