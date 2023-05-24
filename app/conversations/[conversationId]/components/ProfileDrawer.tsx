@@ -6,7 +6,7 @@
  */
 
 // Import necessary libraries and components
-import { Fragment, useMemo, useState } from "react";
+import React, { Fragment, useMemo, useState } from "react";
 import { Dialog, Transition } from "@headlessui/react";
 import { IoClose, IoTrash } from "react-icons/io5";
 import { Conversation, User } from "@prisma/client";
@@ -79,9 +79,9 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
             <div className='fixed' />
           </Transition.Child>
 
-          <div className='fixed overflow-hidden'>
+          <div className='fixed overflow-hidden '>
             <div className='absolute overflow-hidden'>
-              <div className='fixed inset-y-0 right-0 flex max-w-full pl-10'>
+              <div className='fixed inset-y-0 right-0 flex max-w-full pl-10 '>
                 <Transition.Child
                   as={Fragment}
                   enter='transform transition ease-in-out duration-500'
@@ -90,8 +90,8 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                   leave='transform transition ease-in-out duration-500'
                   leaveFrom='translate-x-0'
                   leaveTo='translate-x-full'>
-                  <Dialog.Panel className='pointer-events-auto w-screen max-w-md'>
-                    <div className='flex h-full flex-col overflow-y-scroll py-6'>
+                  <Dialog.Panel className='pointer-events-auto border-l border-solid border-black max-w-md'>
+                    <div className='flex h-full flex-col overflow-y-scroll py-6 bg-white'>
                       <div className='px-4 sm:px-6'>
                         {/* Render close button */}
                         <div className='flex items-start justify-end'>
@@ -117,9 +117,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                             )}
                           </div>
                           <div>{title}</div>
-                          <div className='text-sm'>
-                            {statusText}
-                          </div>
+                          <div className='text-sm'>{statusText}</div>
                           {/* Render delete button */}
                           <div className='flex gap-10 my-8'>
                             <div
@@ -128,9 +126,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                               <div className='w-10 h-10 flex items-center justify-center'>
                                 <IoTrash size={20} />
                               </div>
-                              <div className=''>
-                                Delete
-                              </div>
+                              <div className=''>Delete</div>
                             </div>
                           </div>
                           {/* Render additional information */}
@@ -142,9 +138,14 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                                     Emails
                                   </dt>
                                   <dd className='mt-1 text-sm sm:col-span-2'>
-                                    {data.users
-                                      .map((user) => user.email)
-                                      .join(", ")}
+                                    {data.users.map((user, index) => (
+                                      <React.Fragment key={user.email}>
+                                        {user.email}
+                                        {index !== data.users.length - 1 && (
+                                          <br />
+                                        )}
+                                      </React.Fragment>
+                                    ))}
                                   </dd>
                                 </div>
                               )}

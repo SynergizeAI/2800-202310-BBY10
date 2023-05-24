@@ -1,8 +1,8 @@
-'use client';
+"use client";
 
-import React, { Fragment } from 'react'
-import { Dialog, Transition } from '@headlessui/react'
-import { IoClose } from 'react-icons/io5'
+import React, { Fragment } from "react";
+import { Dialog, Transition } from "@headlessui/react";
+import { IoClose } from "react-icons/io5";
 
 interface ModalProps {
   isOpen?: boolean;
@@ -18,46 +18,47 @@ interface ModalProps {
 const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
   return (
     <Transition.Root show={isOpen} as={Fragment}>
-      <Dialog as="div" className="relative z-50" onClose={onClose}>
+      <Dialog as='div' className='relative z-50' onClose={onClose}>
         <Transition.Child
           as={Fragment}
-          enter="ease-out duration-300"
-          enterFrom="opacity-0"
-          enterTo="opacity-100"
-          leave="ease-in duration-200"
-          leaveFrom="opacity-100"
-          leaveTo="opacity-0"
-        >
-          <div 
-            className="
+          enter='ease-out duration-300'
+          enterFrom='opacity-0'
+          enterTo='opacity-100'
+          leave='ease-in duration-200'
+          leaveFrom='opacity-100'
+          leaveTo='opacity-0'>
+          <div
+            className='
               fixed 
               inset-0
-            "
+            '
           />
         </Transition.Child>
 
-        <div className="fixed inset-0 z-10 overflow-y-auto">
-          <div 
-            className="
+        <div className='fixed inset-0 z-10 overflow-y-auto '>
+          <div
+            className='
               flex 
               min-h-full 
               items-center 
               justify-center 
               text-center 
               sm:p-0
-            "
-          >
+              
+            '>
             <Transition.Child
               as={Fragment}
-              enter="ease-out duration-300"
-              enterFrom="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-              enterTo="opacity-100 translate-y-0 sm:scale-100"
-              leave="ease-in duration-200"
-              leaveFrom="opacity-100 translate-y-0 sm:scale-100"
-              leaveTo="opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95"
-            >
-              <Dialog.Panel 
-                className="
+              enter='ease-out duration-300'
+              enterFrom='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'
+              enterTo='opacity-100 translate-y-0 sm:scale-100'
+              leave='ease-in duration-200'
+              leaveFrom='opacity-100 translate-y-0 sm:scale-100'
+              leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'>
+              <Dialog.Panel
+                className='
+                bg-white
+                border
+                border-black
                   relative 
                   transform 
                   overflow-hidden
@@ -70,26 +71,21 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                   sm:w-full 
                   sm:max-w-lg 
                   sm:p-6
-                "
-              >
-                <div 
-                  className="
+                '>
+                <div
+                  className='
                     absolute 
                     right-0 
                     top-0 
                     pr-4 
                     pt-4 
                     sm:block
-                  "
-                >
+                  '>
                   <button
-                    type="button"
-                    className="
-                    "
-                    onClick={onClose}
-                  >
-                    <span className="sr-only">Close</span>
-                    <IoClose className="h-6 w-6" aria-hidden="true" />
+                    type='button'
+                    onClick={onClose}>
+                    <span className='sr-only'>Close</span>
+                    <IoClose className='h-6 w-6' aria-hidden='true' />
                   </button>
                 </div>
                 {children}
@@ -99,7 +95,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
         </div>
       </Dialog>
     </Transition.Root>
-  )
-}
+  );
+};
 
 export default Modal;

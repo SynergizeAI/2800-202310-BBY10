@@ -50,7 +50,7 @@ export async function POST(request: Request) {
         messages: { include: { seen: true } },
       },
     });
-    console.log(newMessage);
+    // console.log(newMessage);
 
     await pusherServer.trigger(conversationId, "messages:new", newMessage);
 
@@ -65,10 +65,10 @@ export async function POST(request: Request) {
     });
 
     let botResponsePromise;
-    if (message.startsWith("@flo")) {
+    if (message! && message.startsWith("@flo")) {
       // remove first word
       const command = message.split(" ").slice(1).join(" ");
-      console.log("command", command);
+      // console.log("command", command);
 
       // Send a "bot:typing" event to the front end
       pusherServer.trigger(conversationId, "bot:typing", { isTyping: true });
@@ -85,7 +85,9 @@ export async function POST(request: Request) {
     // Return the new message as response
     const response = NextResponse.json(newMessage);
 
-    await upsert(message, newMessage.id, conversationId, currentUser.name);
+    if (message!) {
+      await upsert(message, newMessage.id, conversationId, currentUser.name);
+    }
 
     // If a bot response is being generated, wait for it to finish
     if (botResponsePromise) {
@@ -104,51 +106,60 @@ async function generateBotResponse(
   conversationId: string,
   currentUser: any
 ) {
+  // if the only word is cat, send a cat image
+  let botResponse;
+  let image = null;
+  if (command === "cat") {
+    const cat = await fetch("https://cataas.com/cat/gif?json=true");
+    const catJson = await cat.json();
+    const catUrl = catJson.url;
+    image = `https://cataas.com/${catUrl}`;
+    botResponse = "Here is a cat!";
+  } else {
+    const matches = await query(command, conversationId);
+    // console.log("context", matches);
 
-  const matches = await query(command, conversationId);
-  // console.log("context", matches);
-
-  const conversation = await prisma.conversation.findUnique({
-    where: { id: conversationId },
-    include: {
-      users: { select: { name: true } },
-      messages: {
-        select: {
-          body: true,
-          createdAt: true,
-          sender: { select: { name: true } },
+    const conversation = await prisma.conversation.findUnique({
+      where: { id: conversationId },
+      include: {
+        users: { select: { name: true } },
+        messages: {
+          select: {
+            body: true,
+            createdAt: true,
+            sender: { select: { name: true } },
+          },
+          orderBy: { createdAt: "desc" },
+          take: 5,
         },
-        orderBy: { createdAt: "desc" },
-        take: 5,
       },
-    },
-  });
+    });
 
-  const name = conversation?.name;
-  const users = conversation?.users.map((user) => user.name);
+    const name = conversation?.name;
+    const users = conversation?.users.map((user) => user.name);
 
-  const conversation_log = conversation?.messages.map((message) => {
-    const { body, createdAt, sender } = message;
-    return { timestamp: createdAt, sender: sender.name, text: body };
-  });
+    const conversation_log = conversation?.messages.map((message) => {
+      const { body, createdAt, sender } = message;
+      return { timestamp: createdAt, sender: sender.name, text: body };
+    });
 
-  const context = matches?.map((match) => match.metadata);
+    const context = matches?.map((match) => match.metadata);
 
-  const context_log = context?.map((log: any) => {
-    const { sender, text, timestamp } = log;
-    return { timestamp, sender, text };
-  });
+    const context_log = context?.map((log: any) => {
+      const { sender, text, timestamp } = log;
+      return { timestamp, sender, text };
+    });
 
-  const props = {
-    users,
-    name,
-    context_log,
-    conversation_log,
-    command,
-  };
+    const props = {
+      users,
+      name,
+      context_log,
+      conversation_log,
+      command,
+    };
 
-  const botResponse = await prompt(props);
-
+    botResponse = await prompt(props);
+  }
   pusherServer.trigger(conversationId, "bot:typing", { isTyping: false });
 
   // Create a new message from the bot
@@ -156,8 +167,9 @@ async function generateBotResponse(
     include: { seen: true, sender: true },
     data: {
       body: botResponse,
+      image: image,
       conversation: { connect: { id: conversationId } },
-      sender: { connect: { id: "64648a2b0a9a533e1373b18e" } },
+      sender: { connect: { id: "6467e41941444b67048c2532" } },
       seen: { connect: { id: currentUser.id } },
     },
   });

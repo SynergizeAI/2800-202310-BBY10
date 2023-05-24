@@ -45,24 +45,22 @@ const MessageBox = React.forwardRef<HTMLDivElement, MessageBoxProps>(
       .join(", ");
 
     // Construct class names conditionally using clsx
-    const container = clsx("flex gap-3 p-4", isOwn && "justify-end");
-    const avatar = clsx(isOwn && "order-2");
-    const body = clsx("flex flex-col gap-2", isOwn && "items-end");
+    const container = clsx("flex gap-3 pl-4 py-2");
+    const body = clsx("flex flex-col");
     const message = clsx(
-      "text-sm w-fit overflow-hidden",
-      isOwn ? "bg-sky-500 text-white" : "bg-gray-100",
-      data.image ? "rounded-md p-0" : "rounded-full py-2 px-3"
+      "text-base w-fit overflow-hidden whitespace-pre-line",
+      data.image && "rounded-md p-0"
     );
 
     // Render the component
     return (
       <div ref={ref} className={container}>
-        <div className={avatar}>
+        <div className='mt-1'>
           <Avatar user={data.sender} />
         </div>
         <div className={body}>
           <div className='flex items-center gap-1'>
-            <div className='text-sm text-gray-500'>
+            <div className='font-medium text-base'>
               {data?.sender?.name || "Loading..."}
             </div>
             <div className='text-xs text-gray-400'>

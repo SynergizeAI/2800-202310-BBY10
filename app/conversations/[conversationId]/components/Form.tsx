@@ -59,12 +59,12 @@ const Form = () => {
   // Render the component
   return (
     <div 
-      className="py-4 px-4zborder-t flex items-center gap-2 lg:gap-4 w-full"
+      className="py-4 px-4zborder-t flex items-center gap-2 lg:gap-4 w-full p-4 "
     >
       <CldUploadButton 
         options={{ maxFiles: 1 }} 
         onUpload={handleUpload} 
-        uploadPreset="pgc9ehd5"
+        uploadPreset="ml_default"
       >
         <HiPhoto size={30} className="text-black" />
       </CldUploadButton>
