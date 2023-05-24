@@ -110,7 +110,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                     options={{ maxFiles: 1 }}
                     onUpload={handleUpload}
                     uploadPreset='ml_default'>
-                    <Button disabled={isLoading} secondary type='button'>
+                    <Button disabled={isLoading} variant='outline' type='button'>
                       Change
                     </Button>
                   </CldUploadButton>
@@ -121,7 +121,7 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
         </div>
 
         <div className='mt-6 flex items-center justify-end gap-x-6'>
-          <Button disabled={isLoading} secondary onClick={onClose}>
+          <Button disabled={isLoading} variant='outline' onClick={onClose}>
             Cancel
           </Button>
           <Button disabled={isLoading} type='submit'>

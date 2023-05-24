@@ -11,7 +11,8 @@ const nextConfig = {
           'res.cloudinary.com', 
           'avatars.githubusercontent.com',
           'raw.githubusercontent.com',
-          'lh3.googleusercontent.com'
+          'lh3.googleusercontent.com',
+          'cataas.com'
         ]
       }
     }
