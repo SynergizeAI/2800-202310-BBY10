@@ -9,13 +9,15 @@ datasource db {
 
 // user model: includes relations to Conversations, Messages and Accounts
 model User {
-  id             String   @id @default(auto()) @map("_id") @db.ObjectId
-  name           String?
-  email          String?  @unique
-  image          String?
-  hashedPassword String?
-  createdAt      DateTime @default(now())
-  updatedAt      DateTime @updatedAt
+  id                          String    @id @default(auto()) @map("_id") @db.ObjectId
+  name                        String?
+  email                       String?   @unique
+  image                       String?
+  hashedPassword              String?
+  passwordResetToken          String? 
+  passwordResetTokenExpiresAt DateTime?
+  createdAt                   DateTime  @default(now())
+  updatedAt                   DateTime  @updatedAt
 
   // relations for User
   conversationIds String[]       @db.ObjectId
