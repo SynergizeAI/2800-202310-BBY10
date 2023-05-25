@@ -2,7 +2,12 @@
 "use client";
 
 // Import necessary components and types from "react-hook-form"
-import { FieldErrors, FieldValues, UseFormRegister } from "react-hook-form";
+import {
+  FieldErrors,
+  FieldValues,
+  UseFormRegister,
+  useFormContext,
+} from "react-hook-form";
 
 /**
  * MessageInput component is a custom input component used to input messages.
@@ -24,6 +29,7 @@ const MessageInput: React.FC<{
   required?: boolean;
   register: UseFormRegister<FieldValues>;
   errors: FieldErrors;
+  onSubmit: () => void;
 }> = ({
   placeholder,
   id,
@@ -31,17 +37,23 @@ const MessageInput: React.FC<{
   required = false, // set default required status as false
   register,
   errors,
+  onSubmit,
 }) => {
   return (
     <div className='relative w-full'>
       {/* Input field */}
-      <input
+      <textarea
         id={id}
-        type={type}
         autoComplete={id} // Helps users complete forms based on earlier input.
         {...register(id, { required })} // Using react-hook-form's register function to register the input field
         placeholder={placeholder} // Placeholder text for the input field
-        className='py-2 px-4 w-full  bg-gray-100 rounded-xl' // Styling the input field
+        className='py-2 px-4 w-full resize-none h-10 bg-gray-100 rounded-xl' // Styling the input field
+        onKeyDown={(e) => {
+          if (e.key === "Enter" && !e.shiftKey) {
+            e.preventDefault();
+            onSubmit();
+          }
+        }}
       />
     </div>
   );
