@@ -5,6 +5,8 @@ import Header from "./components/Header";
 import Body from "./components/Body";
 import Form from "./components/Form";
 import EmptyState from "@/app/components/EmptyState";
+import { Suspense } from "react";
+import Loading from "./components/loading";
 
 interface IParams {
   conversationId: string;
@@ -27,9 +29,11 @@ const conversationId = async ({ params }: { params: IParams }) => {
   return (
     <div className='lg:pl-80 h-full'>
       <div className='h-full flex flex-col'>
-        <Header conversation={conversation} />
-        <Body initialMessages={messages} />
-        <Form />
+        <Suspense fallback={<Loading />}>
+          <Header conversation={conversation} />
+          <Body initialMessages={messages} />
+          <Form />
+        </Suspense>
       </div>
     </div>
   );

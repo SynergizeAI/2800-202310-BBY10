@@ -14,6 +14,16 @@ import Modal from "../Modal";
 import { Button } from "@/app/button";
 import Image from "next/image";
 import { toast } from "react-hot-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "../inputs/label";
 
 interface SettingsModalProps {
   isOpen?: boolean;
@@ -51,12 +61,14 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   const image = watch("image");
 
   const handleUpload = (result: any) => {
+    console.log(result.info.secure_url);
     setValue("image", result.info.secure_url, {
       shouldValidate: true,
     });
   };
 
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log("submit");
     setIsLoading(true);
 
     axios
@@ -70,18 +82,15 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
   };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className='space-y-12'>
-          <div className='border-b border-gray-900/10 pb-12'>
-            <h2 className='text-base font-semibold leading-7 text-gray-900'>
-              Profile
-            </h2>
-            <p className='mt-1 text-sm leading-6 text-gray-600'>
-              Edit your information.
-            </p>
-
-            <div className='mt-10 flex flex-col gap-y-8'>
+    <Dialog modal={false} open={isOpen} onOpenChange={onClose}>
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Profile</DialogTitle>
+          <DialogDescription>Edit your information.</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className='flex flex-col gap-4'>
+            <div>
               <Input
                 disabled={isLoading}
                 label='Name'
@@ -90,46 +99,46 @@ const SettingsModal: React.FC<SettingsModalProps> = ({
                 required
                 register={register}
               />
-              <div>
-                <label
-                  htmlFor='photo'
-                  className='block leading-6'>
-                  Photo
-                </label>
-                <div className='mt-2 flex items-center gap-x-3'>
-                  <Image
-                    width='48'
-                    height='48'
-                    className='rounded-full'
-                    src={
-                      image || currentUser?.image || "/images/placeholder.png"
-                    }
-                    alt='Avatar'
-                  />
-                  <CldUploadButton
-                    options={{ maxFiles: 1 }}
-                    onUpload={handleUpload}
-                    uploadPreset='ml_default'>
-                    <Button disabled={isLoading} variant='outline' type='button'>
-                      Change
-                    </Button>
-                  </CldUploadButton>
-                </div>
+            </div>
+            <div>
+              <Label>Photo</Label>
+              <div className='mt-2 flex items-center gap-x-3 z-[10000]'>
+                <Image
+                  width='48'
+                  height='48'
+                  className='rounded-full'
+                  src={image || currentUser?.image || "/images/placeholder.png"}
+                  alt='Avatar'
+                />
+                <CldUploadButton
+                  options={{ maxFiles: 1 }}
+                  onUpload={(result: any) => {
+                    console.log("onUpload called", result);
+                    handleUpload(result);
+                  }}
+                  onClick={(e: any) => {
+                    e.stopPropagation();
+                  }}
+                  uploadPreset='ml_default'>
+                  <Button disabled={isLoading} variant='outline' type='button'>
+                    Change
+                  </Button>
+                </CldUploadButton>
               </div>
             </div>
           </div>
-        </div>
 
-        <div className='mt-6 flex items-center justify-end gap-x-6'>
-          <Button disabled={isLoading} variant='outline' onClick={onClose}>
-            Cancel
-          </Button>
-          <Button disabled={isLoading} type='submit'>
-            Save
-          </Button>
-        </div>
-      </form>
-    </Modal>
+          <div className='mt-6 flex items-center justify-end gap-x-6'>
+            <Button disabled={isLoading} variant='outline' onClick={onClose}>
+              Cancel
+            </Button>
+            <Button disabled={isLoading} type='submit'>
+              Save
+            </Button>
+          </div>
+        </form>
+      </DialogContent>
+    </Dialog>
   );
 };
 

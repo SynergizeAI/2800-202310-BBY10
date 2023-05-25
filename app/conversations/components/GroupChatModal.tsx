@@ -1,20 +1,25 @@
-'use client';
+"use client";
 
-import axios from 'axios';
-import React, { useState } from 'react'
-import { useRouter } from 'next/navigation';
-import { 
-  FieldValues, 
-  SubmitHandler, 
-  useForm 
-} from 'react-hook-form';
-import { User } from '@prisma/client';
+import axios from "axios";
+import React, { useState } from "react";
+import { useRouter } from "next/navigation";
+import { FieldValues, SubmitHandler, useForm } from "react-hook-form";
+import { User } from "@prisma/client";
 
-import { Input } from '@/app/components/inputs/input';
-import Select from '@/app/components/inputs/Select';
-import Modal from '@/app/components/Modal';
-import { Button } from '@/app/button';
-import { toast } from 'react-hot-toast';
+import { Input } from "@/app/components/inputs/input";
+import Select from "@/app/components/inputs/Select";
+import Modal from "@/app/components/Modal";
+import { Button } from "@/app/button";
+import { toast } from "react-hot-toast";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 
 interface GroupChatModalProps {
   isOpen?: boolean;
@@ -27,30 +32,31 @@ interface GroupChatModalProps {
  * @param {GroupChatModalProps} props - The props object containing isOpen, onClose, and users.
  * @returns {JSX.Element} The GroupChatModal component.
  */
-const GroupChatModal: React.FC<GroupChatModalProps> = ({ 
-  isOpen, 
-  onClose, 
-  users = []
+const GroupChatModal: React.FC<GroupChatModalProps> = ({
+  isOpen,
+  onClose,
+  users = [],
 }) => {
   const router = useRouter();
   const [isLoading, setIsLoading] = useState(false);
+  const [searchValue, setSearchValue] = useState("");
 
   const {
     register,
     handleSubmit,
     setValue,
+    trigger,
     watch,
-    formState: {
-      errors,
-    }
+    reset,
+    formState: { errors },
   } = useForm<FieldValues>({
     defaultValues: {
-      name: '',
-      members: []
-    }
+      name: "",
+      members: [],
+    },
   });
 
-  const members = watch('members');
+  const members = watch("members");
 
   /**
    * Handles the form submission.
@@ -58,76 +64,76 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
    */
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
-  
-    axios.post('/api/conversations', {
-      ...data,
-      isGroup: true
-    })
-    .then(() => {
-      router.refresh();
-      onClose();
-    })
-    .catch(() => toast.error('Something went wrong!'))
-    .finally(() => setIsLoading(false));
-  }
+
+    axios
+      .post("/api/conversations", {
+        ...data,
+        isGroup: true,
+      })
+      .then((res) => {
+        router.push(`/conversations/${res.data.id}`);
+        reset({ name: "", members: [] }); // use reset here
+        setSearchValue("");
+        onClose();
+      })
+      .catch(() => toast.error("Something went wrong!"))
+      .finally(() => setIsLoading(false));
+  };
 
   return (
-    <Modal isOpen={isOpen} onClose={onClose}>
-      <form onSubmit={handleSubmit(onSubmit)}>
-        <div className="space-y-12">
-          <div className="border-b pb-12">
-            <h2 
-              className="
-                text-base 
-                leading-7
-                font-semibold
-              "
-              >
-                Create a group chat
-              </h2>
-            <p className="mt-1 leading-6">
-              Create a chat with more than 2 people.
-            </p>
-            <div className="mt-10 flex flex-col gap-y-8">
+    <Dialog open={isOpen} onOpenChange={onClose}>
+      {/* <DialogTrigger>Open</DialogTrigger> */}
+      <DialogContent>
+        <DialogHeader>
+          <DialogTitle>Create a group chat</DialogTitle>
+          <DialogDescription>You can add multiple people.</DialogDescription>
+        </DialogHeader>
+        <form onSubmit={handleSubmit(onSubmit)}>
+          <div className='flex flex-col gap-4'>
+            <div>
               <Input
+                placeholder="What's the group name?"
                 disabled={isLoading}
-                label="Name" 
-                id="name" 
-                errors={errors} 
-                required 
+                label='Name'
+                id='name'
+                errors={errors}
+                required
                 register={register}
               />
+            </div>
+            <div>
               <Select
                 disabled={isLoading}
-                label="Members" 
-                options={users.map((user) => ({ 
-                  value: user.id, 
-                  label: user.name 
-                }))} 
-                onChange={(value) => setValue('members', value, { 
-                  shouldValidate: true 
-                })} 
+                label='Members'
+                options={
+                  searchValue
+                    ? users.map((user) => ({
+                        value: user.id,
+                        label: user.name,
+                        icon: user.image,
+                      }))
+                    : []
+                }
+                onInputChange={(value: string) => setSearchValue(value)}
+                onChange={(value) => {
+                  setValue("members", value);
+                  trigger("members");
+                }}
                 value={members}
               />
             </div>
           </div>
-        </div>
-        <div className="mt-6 flex items-center justify-end gap-x-6">
-          <Button
-            disabled={isLoading}
-            onClick={onClose} 
-            type="button"
-            variant='outline'
-          >
-            Cancel
-          </Button>
-          <Button disabled={isLoading} type="submit">
-            Create
-          </Button>
-        </div>
-      </form>
-    </Modal>
-  )
-}
+          <DialogFooter>
+            <div className='mt-6'>
+              <Button disabled={isLoading} type='submit'>
+                Create
+              </Button>
+            </div>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};
 
 export default GroupChatModal;
