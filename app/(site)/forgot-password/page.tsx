@@ -61,8 +61,8 @@ const Home = () => {
           <Image alt='logo' height='48' width='48' src='/images/logo.png' />
           <div className='text-2xl font-semibold'>Synergize</div>
         </div>
-        <div className=' bg-white px-4 py-8 border sm:rounded-lg sm:px-10 '>
-          <h2 className=' text-xl font-semibold mb-8 '>Forgot Password</h2>
+        <div className='bg-white px-4 py-8 border sm:rounded-lg sm:px-10'>
+          <h2 className='text-xl font-semibold mb-8'>Forgot Password</h2>
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className='w-80'>
               <FormField
