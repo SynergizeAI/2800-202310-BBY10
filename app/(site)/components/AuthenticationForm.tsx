@@ -5,6 +5,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
 import axios from "axios";
+import { Loader2 } from "lucide-react";
 import Link from "next/link";
 import { Button } from "@/app/button";
 import { toast } from "react-hot-toast";
@@ -27,6 +28,7 @@ const AuthenticationForm = () => {
   const session = useSession();
   const router = useRouter();
   const [formType, setFormType] = useState<FormType>("LOGIN");
+  const [isLoading, setIsLoading] = useState(false);
 
   useEffect(() => {
     if (session?.status === "authenticated") {
@@ -70,29 +72,32 @@ const AuthenticationForm = () => {
   async function onSubmit(
     values: z.infer<typeof registerFormSchema | typeof loginFormSchema>
   ) {
-    console.log("submitting");
+    setIsLoading(true);
     const { email, password } = values;
 
     if (formType === "REGISTER") {
       axios
         .post("/api/register", values)
         .then(() => signIn("credentials", { email, password }))
-        .catch(() => toast.error("Something went wrong"));
+        .catch(() => toast.error("Something went wrong"))
+        .finally(() => setIsLoading(false));
     } else if (formType === "LOGIN") {
       signIn("credentials", {
         email,
         password,
         redirect: false,
-      }).then((callback) => {
-        if (callback?.error) {
-          toast.error("Invalid credentials");
-        }
+      })
+        .then((callback) => {
+          if (callback?.error) {
+            toast.error("Invalid credentials");
+          }
 
-        if (callback?.ok && !callback?.error) {
-          toast.success("Logged in!");
-          router.push("/users");
-        }
-      });
+          if (callback?.ok && !callback?.error) {
+            toast.success("Logged in!");
+            router.push("/users");
+          }
+        })
+        .finally(() => setIsLoading(false));
     }
   }
 
@@ -118,6 +123,7 @@ const AuthenticationForm = () => {
                       <FormLabel>Name</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={isLoading}
                           className='mb-4'
                           id='name'
                           placeholder='Name'
@@ -137,6 +143,7 @@ const AuthenticationForm = () => {
                     <FormLabel>Email address</FormLabel>
                     <FormControl>
                       <Input
+                        disabled={isLoading}
                         className='mb-4'
                         id='email'
                         type='email'
@@ -156,6 +163,7 @@ const AuthenticationForm = () => {
                     <FormLabel>Password</FormLabel>
                     <FormControl>
                       <Input
+                        disabled={isLoading}
                         className='mb-4'
                         id='password'
                         type='password'
@@ -176,6 +184,7 @@ const AuthenticationForm = () => {
                       <FormLabel>Confirm Password</FormLabel>
                       <FormControl>
                         <Input
+                          disabled={isLoading}
                           className='mb-4'
                           id='confirm'
                           type='password'
@@ -190,8 +199,18 @@ const AuthenticationForm = () => {
               )}
             </div>
             <div className='w-full mt-6 mb-4 border-t border-slate-300'>
-              <Button className='w-full mt-6' variant='default' type='submit'>
-                {formType === "LOGIN" ? "Sign in" : "Register"}
+              <Button
+                className='w-full mt-6'
+                disabled={isLoading}
+                type='submit'>
+                {isLoading ? (
+                  <>
+                    <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                    Please wait
+                  </>
+                ) : (
+                  <span>{formType === "LOGIN" ? "Sign in" : "Register"}</span>
+                )}
               </Button>
             </div>
           </form>
