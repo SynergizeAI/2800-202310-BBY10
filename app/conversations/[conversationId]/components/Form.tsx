@@ -83,9 +83,9 @@ const Form = () => {
           required
           placeholder='Write a message'
         />
-        {/* <button type='submit' className=' p-2 bg-black'>
+        <button type='submit' className=' p-2 bg-black'>
           <HiPaperAirplane size={18} className='text-white' />
-        </button> */}
+        </button>
       </form>
     </div>
   );
