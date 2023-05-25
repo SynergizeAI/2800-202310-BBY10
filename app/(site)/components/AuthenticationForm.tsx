@@ -38,7 +38,7 @@ const AuthenticationForm = () => {
     setFormType(formType === "LOGIN" ? "REGISTER" : "LOGIN");
   }, [formType]);
 
-  const authFormSchema = z
+  const registerFormSchema = z
     .object({
       name: z.string().min(1, "Name is required"),
       email: z.string().email("Invalid email address"),
@@ -50,8 +50,15 @@ const AuthenticationForm = () => {
       path: ["confirm"], // path of error
     });
 
-  const form = useForm<z.infer<typeof authFormSchema>>({
-    resolver: zodResolver(authFormSchema),
+  const loginFormSchema = z.object({
+    email: z.string().email("Invalid email address"),
+    password: z.string().min(8, "Password must be at least 8 characters"),
+  });
+
+  const form = useForm({
+    resolver: zodResolver(
+      formType === "REGISTER" ? registerFormSchema : loginFormSchema
+    ),
     defaultValues: {
       name: "",
       email: "",
@@ -60,7 +67,10 @@ const AuthenticationForm = () => {
     },
   });
 
-  async function onSubmit(values: z.infer<typeof authFormSchema>) {
+  async function onSubmit(
+    values: z.infer<typeof registerFormSchema | typeof loginFormSchema>
+  ) {
+    console.log("submitting");
     const { email, password } = values;
 
     if (formType === "REGISTER") {
@@ -72,7 +82,16 @@ const AuthenticationForm = () => {
       signIn("credentials", {
         email,
         password,
-        callbackUrl: "/users",
+        redirect: false,
+      }).then((callback) => {
+        if (callback?.error) {
+          toast.error("Invalid credentials");
+        }
+
+        if (callback?.ok && !callback?.error) {
+          toast.success("Logged in!");
+          router.push("/users");
+        }
       });
     }
   }
