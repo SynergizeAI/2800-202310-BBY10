@@ -2,12 +2,17 @@ import { NextResponse } from "next/server";
 import { PrismaClient } from "@prisma/client";
 import crypto from "crypto";
 import nodemailer from "nodemailer";
+import { headers } from "next/headers";
 
 const prisma = new PrismaClient();
 
 export async function POST(request: Request) {
   try {
+    const headersList = headers();
+    const host = headersList.get("host");
+
     const body = await request.json();
+    console.log(body);
     const { email } = body;
     const user = await prisma.user.findUnique({ where: { email } });
 
@@ -27,7 +32,7 @@ export async function POST(request: Request) {
       },
     });
 
-    const resetUrl = `http://localhost:3000/reset-password?token=${token}`;
+    const resetUrl = `${host}/reset-password?token=${token}`;
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
