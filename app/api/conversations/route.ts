@@ -96,7 +96,7 @@ export async function POST(request: Request) {
       return new NextResponse("Unauthorized", { status: 401 });
     }
 
-    if (isGroup && (!members || members.length < 2 || !name)) {
+    if (isGroup && (!members || !name)) {
       return new NextResponse("Invalid group", { status: 400 });
     }
 
