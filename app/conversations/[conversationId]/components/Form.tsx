@@ -34,14 +34,10 @@ const Form = () => {
    * @param {Object} data - The form data.
    */
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
+    console.log(data)
     // return if message is over 1000 characters
     if (data.message.length > 1000) {
       toast.error("Message must be less than 1000 characters.");
-      return;
-    }
-
-    if (data.message.length === 0) {
-      toast.error("Message cannot be empty.");
       return;
     }
 
@@ -80,10 +76,16 @@ const Form = () => {
       <form
         onSubmit={handleSubmit(onSubmit)}
         className='flex items-center gap-2 lg:gap-4 w-full'>
-        <MessageInput id='message' placeholder='Write a message' />
-        <button type='submit' className=' p-2 bg-black'>
+        <MessageInput
+          id='message'
+          register={register}
+          errors={errors}
+          required
+          placeholder='Write a message'
+        />
+        {/* <button type='submit' className=' p-2 bg-black'>
           <HiPaperAirplane size={18} className='text-white' />
-        </button>
+        </button> */}
       </form>
     </div>
   );
