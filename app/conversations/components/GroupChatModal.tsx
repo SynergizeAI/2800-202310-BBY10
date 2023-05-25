@@ -65,6 +65,12 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
     setIsLoading(true);
 
+    if (data.members.length < 2) {
+      toast.error("Requires a minimum of 2 members.");
+      setIsLoading(false);
+      return;
+    }
+
     axios
       .post("/api/conversations", {
         ...data,
@@ -86,7 +92,7 @@ const GroupChatModal: React.FC<GroupChatModalProps> = ({
       <DialogContent>
         <DialogHeader>
           <DialogTitle>Create a group chat</DialogTitle>
-          <DialogDescription>You can add multiple people.</DialogDescription>
+          <DialogDescription>Requires a minimum of 2 members.</DialogDescription>
         </DialogHeader>
         <form onSubmit={handleSubmit(onSubmit)}>
           <div className='flex flex-col gap-4'>
