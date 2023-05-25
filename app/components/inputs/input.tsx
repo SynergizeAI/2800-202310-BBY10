@@ -12,8 +12,8 @@ export interface InputProps
   id: string;
   type?: string;
   required?: boolean;
-  register: UseFormRegister<FieldValues>;
-  errors: FieldErrors;
+  register?: UseFormRegister<FieldValues>;
+  errors?: FieldErrors;
   disabled?: boolean;
 }
 
@@ -23,7 +23,7 @@ const Input = React.forwardRef<HTMLInputElement, InputProps>(
       <>
         <Label htmlFor={props.id}>{props.label}</Label>
         <input
-          {...register(props.id)}
+          {...(register && register(props.id))}
           type={type}
           className={cn(
             "flex h-10 w-full border border-input px-3 py-2",
