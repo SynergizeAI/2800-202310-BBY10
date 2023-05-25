@@ -3,11 +3,12 @@
 
 import clsx from "clsx"; // utility for constructing className strings conditionally
 import Image from "next/image";
-import React, { useState, forwardRef } from "react";
+import React, { useState, forwardRef, Suspense } from "react";
 import { format } from "date-fns"; // library for manipulating JS dates
 import { useSession } from "next-auth/react";
 import Avatar from "@/app/components/Avatar";
 import ImageModal from "./ImageModal";
+import Loading from "./loading";
 
 // Import FullMessageType from types
 import { FullMessageType } from "@/app/types";
@@ -28,7 +29,7 @@ interface MessageBoxProps {
 
 const MessageBox = React.forwardRef<HTMLDivElement, MessageBoxProps>(
   ({ data, isLast }, ref) => {
-    MessageBox.displayName = 'MessageBox';
+    MessageBox.displayName = "MessageBox";
     // Get current user's session
     const session = useSession();
 
@@ -67,31 +68,31 @@ const MessageBox = React.forwardRef<HTMLDivElement, MessageBoxProps>(
               {format(new Date(data.createdAt), "p")}
             </div>
           </div>
-          <div className={message}>
-            <ImageModal
-              src={data.image}
-              isOpen={imageModalOpen}
-              onClose={() => setImageModalOpen(false)}
-            />
-            {data.image ? (
-              <Image
-                alt='Image'
-                height='288'
-                width='288'
-                onClick={() => setImageModalOpen(true)}
+            <div className={message}>
+              <ImageModal
                 src={data.image}
-                className='
+                isOpen={imageModalOpen}
+                onClose={() => setImageModalOpen(false)}
+              />
+              {data.image ? (
+                <Image
+                  alt='Image'
+                  height='288'
+                  width='288'
+                  onClick={() => setImageModalOpen(true)}
+                  src={data.image}
+                  className='
                 object-cover 
                 cursor-pointer 
-                hover:scale-110 
+                hover:scale-105
                 transition 
                 translate
               '
-              />
-            ) : (
-              <div>{data.body}</div>
-            )}
-          </div>
+                />
+              ) : (
+                <div>{data.body}</div>
+              )}
+            </div>
           {isLast && isOwn && seenList.length > 0 && (
             <div
               className='

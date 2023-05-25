@@ -28,9 +28,18 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
 
   return (
     <>
-      <SettingsModal currentUser={currentUser} isOpen={isOpen} onClose={() => setIsOpen(false)} />
+      <SettingsModal
+        currentUser={currentUser}
+        isOpen={isOpen}
+        onClose={() => setIsOpen(false)}
+      />
       <div className='bg-slate-200 hidden lg:fixed lg:inset-y-0 lg:left-0 lg:z-40 lg:w-20 xl:px-6 lg:overflow-y-auto lg:border-r-[1px] lg:pb-4 lg:flex lg:flex-col justify-between'>
         {/* Main navigation */}
+        <nav className='mt-4 flex flex-col justify-between items-center'>
+          <div onClick={() => setIsOpen(true)} className='cursor-pointer'>
+            <Avatar user={currentUser} />
+          </div>
+        </nav>
         <nav className='mt-4 flex flex-col justify-between '>
           <ul role='list' className='flex flex-col items-center space-y-1'>
             {routes.map((item) => (
@@ -38,20 +47,12 @@ const DesktopSidebar: React.FC<DesktopSidebarProps> = ({ currentUser }) => {
                 key={item.label}
                 href={item.href}
                 icon={item.icon}
-                active={item.active}
+                // active={item.active}
                 onClick={item.onClick}
                 mobile={false}
               />
             ))}
           </ul>
-        </nav>
-        {/* User settings */}
-        <nav className='mt-4 flex flex-col justify-between items-center'>
-          <div
-            onClick={() => setIsOpen(true)}
-            className='cursor-pointer'>
-            <Avatar user={currentUser} />
-          </div>
         </nav>
       </div>
     </>

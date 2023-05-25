@@ -54,24 +54,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
               leave='ease-in duration-200'
               leaveFrom='opacity-100 translate-y-0 sm:scale-100'
               leaveTo='opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95'>
-              <Dialog.Panel
-                className='
-                bg-white
-                border
-                border-black
-                  relative 
-                  transform 
-                  overflow-hidden
-                  px-4 
-                  pb-4
-                  pt-5 
-                  text-left 
-                  w-full
-                  sm:my-8 
-                  sm:w-full 
-                  sm:max-w-lg 
-                  sm:p-6
-                '>
+              <Dialog.Panel className='bg-white border relative  transform  overflow-hidden rounded-lg px-4  pb-4 pt-5  text-left  w-full sm:my-8  sm:w-full  sm:max-w-lg  sm:p-6 '>
                 <div
                   className='
                     absolute 
@@ -81,9 +64,7 @@ const Modal: React.FC<ModalProps> = ({ isOpen, onClose, children }) => {
                     pt-4 
                     sm:block
                   '>
-                  <button
-                    type='button'
-                    onClick={onClose}>
+                  <button type='button' onClick={onClose}>
                     <span className='sr-only'>Close</span>
                     <IoClose className='h-6 w-6' aria-hidden='true' />
                   </button>

@@ -4,7 +4,7 @@ import { User } from "@prisma/client";
 import { useRouter } from "next/navigation";
 import { useSession } from "next-auth/react";
 import { useEffect, useMemo, useState } from "react";
-import { MdOutlineGroupAdd } from "react-icons/md";
+import { MdAdd } from "react-icons/md";
 import clsx from "clsx";
 import { find, uniq } from "lodash";
 
@@ -126,10 +126,8 @@ const ConversationList: React.FC<ConversationListProps> = ({
             <div className='font-semibold text-lg'>Messages</div>
             <div
               onClick={() => setIsModalOpen(true)}
-              className='
-                p-2 
-              '>
-              <MdOutlineGroupAdd size={20} />
+              className="hover: cursor-pointer p-2">
+              <MdAdd size={20} />
             </div>
           </div>
           {items.map((item) => (

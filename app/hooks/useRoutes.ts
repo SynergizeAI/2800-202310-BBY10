@@ -20,18 +20,18 @@ const useRoutes = () => {
 
   const routes = useMemo(
     () => [
-      {
-        label: "Chat",
-        href: "/conversations",
-        icon: HiChat,
-        active: pathname === "/conversations" || !!conversationId,
-      },
-      {
-        label: "Users",
-        href: "/users",
-        icon: HiUsers,
-        active: pathname === "/users",
-      },
+      // {
+      //   label: "Chat",
+      //   href: "/conversations",
+      //   icon: HiChat,
+      //   active: pathname === "/conversations" || !!conversationId,
+      // },
+      // {
+      //   label: "Users",
+      //   href: "/users",
+      //   icon: HiUsers,
+      //   active: pathname === "/users",
+      // },
       {
         label: "Logout",
         href: "#",

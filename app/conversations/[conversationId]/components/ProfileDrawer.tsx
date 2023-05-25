@@ -90,7 +90,7 @@ const ProfileDrawer: React.FC<ProfileDrawerProps> = ({
                   leave='transform transition ease-in-out duration-500'
                   leaveFrom='translate-x-0'
                   leaveTo='translate-x-full'>
-                  <Dialog.Panel className='pointer-events-auto border-l border-solid border-black max-w-md'>
+                  <Dialog.Panel className='pointer-events-auto border-l max-w-md'>
                     <div className='flex h-full flex-col overflow-y-scroll py-6 bg-white'>
                       <div className='px-4 sm:px-6'>
                         {/* Render close button */}
