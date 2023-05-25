@@ -82,7 +82,7 @@ const Home = () => {
                       />
                     </FormControl>
                     <FormDescription>
-                      We'll send you a link to reset your password.
+                      We&apos;ll send you a link to reset your password.
                     </FormDescription>
                     <FormMessage />
                   </FormItem>
