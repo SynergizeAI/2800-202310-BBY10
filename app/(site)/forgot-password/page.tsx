@@ -1,5 +1,6 @@
 "use client";
 
+import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@/app/components/inputs/input";
@@ -9,6 +10,7 @@ import { toast } from "react-hot-toast";
 import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { useForm } from "react-hook-form";
+import { Loader2 } from "lucide-react";
 import {
   Form,
   FormControl,
@@ -18,12 +20,14 @@ import {
   FormLabel,
   FormMessage,
 } from "@/app/components/inputs/form";
+import { set } from "lodash";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Invalid email address" }),
 });
 
 const Home = () => {
+  const [isLoading, setIsLoading] = useState(false);
   const router = useRouter();
 
   // 1. Define your form.
@@ -36,6 +40,7 @@ const Home = () => {
 
   // 2. Define a submit handler.
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    setIsLoading(true);
     const { email } = values;
 
     const response = await fetch("/api/forgot-password", {
@@ -45,6 +50,8 @@ const Home = () => {
       },
       body: JSON.stringify({ email }),
     });
+
+    setIsLoading(false);
 
     if (response.ok) {
       toast.success("Check your email for a link to reset your password.");
@@ -73,6 +80,7 @@ const Home = () => {
                     <FormLabel>Email</FormLabel>
                     <FormControl>
                       <Input
+                        disabled={isLoading}
                         className='mb-4'
                         id='email'
                         type='email'
@@ -89,8 +97,19 @@ const Home = () => {
                 )}
               />
               <div className='w-full mt-6 mb-4 border-t border-slate-300'>
-                <Button className='w-full mt-6' variant='default' type='submit'>
-                  Send Reset Link
+                <Button
+                  className='w-full mt-6'
+                  variant='default'
+                  disabled={isLoading}
+                  type='submit'>
+                  {isLoading ? (
+                    <>
+                      <Loader2 className='mr-2 h-4 w-4 animate-spin' />
+                      Please wait
+                    </>
+                  ) : (
+                    <span>Send Reset Link</span>
+                  )}
                 </Button>
               </div>
             </form>
