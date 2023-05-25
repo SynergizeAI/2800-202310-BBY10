@@ -1,19 +1,42 @@
 "use client";
 
-import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
 import Image from "next/image";
 import { Input } from "@/app/components/inputs/input";
 import { Button } from "@/app/button";
 import Link from "next/link";
 import { toast } from "react-hot-toast";
+import { zodResolver } from "@hookform/resolvers/zod";
+import * as z from "zod";
+import { useForm } from "react-hook-form";
+import {
+  Form,
+  FormControl,
+  FormDescription,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/app/components/inputs/form";
+
+const formSchema = z.object({
+  email: z.string().email({ message: "Invalid email address" }),
+});
 
 const Home = () => {
-  const [email, setEmail] = useState("");
   const router = useRouter();
 
-  const handleSubmit = async (e: FormEvent) => {
-    e.preventDefault();
+  // 1. Define your form.
+  const form = useForm<z.infer<typeof formSchema>>({
+    resolver: zodResolver(formSchema),
+    defaultValues: {
+      email: "",
+    },
+  });
+
+  // 2. Define a submit handler.
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    const { email } = values;
 
     const response = await fetch("/api/forgot-password", {
       method: "POST",
@@ -26,8 +49,10 @@ const Home = () => {
     if (response.ok) {
       toast.success("Check your email for a link to reset your password.");
       router.push("/");
+    } else {
+      toast.error("Something went wrong.");
     }
-  };
+  }
 
   return (
     <div className='flex min-h-full flex-col justify-center py-12 sm:px-6 lg:px-8 bg-slate-50'>
@@ -38,23 +63,38 @@ const Home = () => {
         </div>
         <div className=' bg-white px-4 py-8 border sm:rounded-lg sm:px-10 '>
           <h2 className=' text-xl font-semibold mb-8 '>Forgot Password</h2>
-          <form className='w-80' onSubmit={handleSubmit}>
-            <Input
-              className='mb-4'
-              id='email'
-              label='Email address'
-              type='email'
-              value={email}
-              onChange={(e) => setEmail(e.target.value)}
-              placeholder='Email address'
-              required={true}
-            />
-            <div className='w-full mt-6 mb-4 border-t border-slate-300'>
-              <Button className='w-full mt-6' variant='default' type='submit'>
-                Send Reset Link
-              </Button>
-            </div>
-          </form>
+          <Form {...form}>
+            <form onSubmit={form.handleSubmit(onSubmit)} className='w-80'>
+              <FormField
+                control={form.control}
+                name='email'
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>Email</FormLabel>
+                    <FormControl>
+                      <Input
+                        className='mb-4'
+                        id='email'
+                        type='email'
+                        placeholder='Email address'
+                        required={true}
+                        {...field}
+                      />
+                    </FormControl>
+                    <FormDescription>
+                      We'll send you a link to reset your password.
+                    </FormDescription>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+              <div className='w-full mt-6 mb-4 border-t border-slate-300'>
+                <Button className='w-full mt-6' variant='default' type='submit'>
+                  Send Reset Link
+                </Button>
+              </div>
+            </form>
+          </Form>
           <div className='flex gap-2'>
             <div>Already have an account?</div>
             <Link href='/' className='underline cursor-pointer'>

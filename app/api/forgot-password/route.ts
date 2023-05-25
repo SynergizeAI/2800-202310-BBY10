@@ -33,6 +33,7 @@ export async function POST(request: Request) {
     });
 
     const resetUrl = `${host}/reset-password?token=${token}`;
+    console.log(resetUrl);
 
     const transporter = nodemailer.createTransport({
       service: "gmail",
@@ -100,11 +101,11 @@ export async function POST(request: Request) {
     <img src="https://synergize-ai.vercel.app/_next/image?url=%2Fimages%2Flogo.png&w=48&q=75" alt="Logo" />
     <h1>Reset your password</h1>
     <p>You have requested a password reset.</p>
-    <p>Click the button below to reset your password</p>
+    <p><a href="${resetUrl}" target="_blank">Click here or the link below to reset your password</a></p>
     <table align="center" border="0" cellspacing="0" cellpadding="0">
     <tr>
         <td>
-            <a href="${resetUrl}" style="background-color: #000; border-radius: 5px; color: #fff; display: inline-block; font-size: 12px; font-weight: 500; line-height: 50px; text-align: center; text-decoration: none; width: 200px;" target="_blank">Reset Password</a>
+        <a href="${resetUrl}" target="_blank" style="background-color: #000; border-radius: 5px; color: #fff; display: inline-block; font-size: 12px; font-weight: 500; line-height: 50px; text-align: center; text-decoration: none; width: 200px;" target="_blank">Reset Password</a>
         </td>
     </tr>
 </table>    <hr style="border:none; border-top:1px solid #eaeaea; margin:26px 0;width:100%" />
