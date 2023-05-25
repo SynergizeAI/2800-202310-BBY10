@@ -1,6 +1,7 @@
 "use client";
 
 import Modal from "@/app/components/Modal";
+import { AspectRatio } from "@/components/ui/aspect-ratio";
 import Image from "next/image";
 import {
   Dialog,
@@ -29,28 +30,18 @@ const ImageModal: React.FC<ImageModalProps> = ({ isOpen, onClose, src }) => {
     return null;
   }
 
-  const [imageSize, setImageSize] = useState({ width: 0, height: 0 });
-
-  const handleImageLoad = (event: any) => {
-    setImageSize({
-      width: event.target.naturalWidth,
-      height: event.target.naturalHeight,
-    });
-  };
-
   return (
     <Dialog open={isOpen} onOpenChange={onClose}>
       <DialogContent>
-        <div className="flex justify-center">
+        <AspectRatio ratio={16 / 9}>
           <Image
-            onLoad={handleImageLoad}
-            width={imageSize.width}
-            height={imageSize.height}
+            fill
             alt='Image'
             src={src}
-            className='object-cover'
+            sizes='(max-width: 768px) 100vw, (max-width: 1200px) 50vw, 33vw'
+            className='object-contain	'
           />
-        </div>
+        </AspectRatio>
       </DialogContent>
     </Dialog>
   );
