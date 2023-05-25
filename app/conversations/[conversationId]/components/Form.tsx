@@ -34,7 +34,7 @@ const Form = () => {
    * @param {Object} data - The form data.
    */
   const onSubmit: SubmitHandler<FieldValues> = (data) => {
-    console.log(data)
+    console.log(data);
     // return if message is over 1000 characters
     if (data.message.length > 1000) {
       toast.error("Message must be less than 1000 characters.");
@@ -57,11 +57,19 @@ const Form = () => {
    * @param {Object} result - The result of the upload.
    */
   const handleUpload = (result: any) => {
-    // Post a new message with the image
-    axios.post("/api/messages", {
-      image: result.info.secure_url,
-      conversationId: conversationId,
-    });
+    console.log(result)
+    if (result.info.format === "pdf") {
+      const pdfUrl = result.info.secure_url;
+      axios.post("/api/messages", {
+        pdfUrl: pdfUrl,
+        conversationId: conversationId,
+      });
+    } else {
+      axios.post("/api/messages", {
+        image: result.info.secure_url,
+        conversationId: conversationId,
+      });
+    }
   };
 
   // Render the component

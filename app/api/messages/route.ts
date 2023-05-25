@@ -5,6 +5,8 @@ import { pusherServer } from "@/app/libs/pusher";
 import { upsert } from "./_utils/upsert";
 import { query } from "./_utils/query";
 import { prompt } from "./_utils/prompt";
+import { QA } from "./_utils/QA";
+import { run } from "./_utils/ingest";
 
 /**
  * Handles a POST request to create a new message in a conversation.
@@ -19,7 +21,7 @@ export async function POST(request: Request) {
 
     // Parse the request body
     const body = await request.json();
-    const { message, image, conversationId } = body;
+    const { message, image, conversationId, pdfUrl } = body;
 
     // Validate if the user's id or email is not available
     if (!currentUser?.id || !currentUser?.email) {
@@ -30,7 +32,7 @@ export async function POST(request: Request) {
     const newMessage = await prisma.message.create({
       include: { seen: true, sender: true },
       data: {
-        body: message,
+        body: pdfUrl ? pdfUrl : message,
         image: image,
         conversation: { connect: { id: conversationId } },
         sender: { connect: { id: currentUser.id } },
@@ -65,6 +67,10 @@ export async function POST(request: Request) {
     });
 
     let botResponsePromise;
+    if (pdfUrl) {
+      console.log("pdfUrl", pdfUrl);
+      run(pdfUrl, conversationId);
+    }
     if (message! && message.startsWith("@flo")) {
       // remove first word
       const command = message.split(" ").slice(1).join(" ");
@@ -116,49 +122,49 @@ async function generateBotResponse(
     image = `https://cataas.com/${catUrl}`;
     botResponse = "Here is a cat!";
   } else {
-    const matches = await query(command, conversationId);
+    // const matches = await query(command, conversationId);
     // console.log("context", matches);
 
-    const conversation = await prisma.conversation.findUnique({
-      where: { id: conversationId },
-      include: {
-        users: { select: { name: true } },
-        messages: {
-          select: {
-            body: true,
-            createdAt: true,
-            sender: { select: { name: true } },
-          },
-          orderBy: { createdAt: "desc" },
-          take: 5,
-        },
-      },
-    });
+    // const conversation = await prisma.conversation.findUnique({
+    //   where: { id: conversationId },
+    //   include: {
+    //     users: { select: { name: true } },
+    //     messages: {
+    //       select: {
+    //         body: true,
+    //         createdAt: true,
+    //         sender: { select: { name: true } },
+    //       },
+    //       orderBy: { createdAt: "desc" },
+    //       take: 5,
+    //     },
+    //   },
+    // });
 
-    const name = conversation?.name;
-    const users = conversation?.users.map((user) => user.name);
+    // const name = conversation?.name;
+    // const users = conversation?.users.map((user) => user.name);
 
-    const conversation_log = conversation?.messages.map((message) => {
-      const { body, createdAt, sender } = message;
-      return { timestamp: createdAt, sender: sender.name, text: body };
-    });
+    // const conversation_log = conversation?.messages.map((message) => {
+    //   const { body, createdAt, sender } = message;
+    //   return { timestamp: createdAt, sender: sender.name, text: body };
+    // });
 
-    const context = matches?.map((match) => match.metadata);
+    // const context = matches?.map((match) => match.metadata);
 
-    const context_log = context?.map((log: any) => {
-      const { sender, text, timestamp } = log;
-      return { timestamp, sender, text };
-    });
+    // const context_log = context?.map((log: any) => {
+    //   const { sender, text, timestamp } = log;
+    //   return { timestamp, sender, text };
+    // });
 
-    const props = {
-      users,
-      name,
-      context_log,
-      conversation_log,
-      command,
-    };
+    // const props = {
+    //   users,
+    //   name,
+    //   context_log,
+    //   conversation_log,
+    //   command,
+    // };
 
-    botResponse = await prompt(props);
+    botResponse = await QA(command, conversationId);
   }
   pusherServer.trigger(conversationId, "bot:typing", { isTyping: false });
 
@@ -189,6 +195,9 @@ async function generateBotResponse(
 
   // Trigger an update to the conversation with the bot's new message
   await pusherServer.trigger(conversationId, "messages:new", botMessage);
+
+  // upsert the bot message
+  await upsert(botResponse, botMessage.id, conversationId, "flo");
 
   // Notify all users of the conversation update
   botUpdatedConversation.users.map((user) => {
