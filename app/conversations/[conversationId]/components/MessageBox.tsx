@@ -9,6 +9,7 @@ import { useSession } from "next-auth/react";
 import Avatar from "@/app/components/Avatar";
 import ImageModal from "./ImageModal";
 import Loading from "./loading";
+import ReactMarkdown from "react-markdown";
 
 // Import FullMessageType from types
 import { FullMessageType } from "@/app/types";
@@ -49,7 +50,7 @@ const MessageBox = React.forwardRef<HTMLDivElement, MessageBoxProps>(
     const container = clsx("flex gap-3 pl-4 py-2");
     const body = clsx("flex flex-col");
     const message = clsx(
-      "text-base w-fit overflow-hidden whitespace-pre-line",
+      "text-base w-fit overflow-hidden",
       data.image && "rounded-md p-0"
     );
 
@@ -68,31 +69,33 @@ const MessageBox = React.forwardRef<HTMLDivElement, MessageBoxProps>(
               {format(new Date(data.createdAt), "p")}
             </div>
           </div>
-            <div className={message}>
-              <ImageModal
+          <div className={message}>
+            <ImageModal
+              src={data.image}
+              isOpen={imageModalOpen}
+              onClose={() => setImageModalOpen(false)}
+            />
+            {data.image ? (
+              <Image
+                alt='Image'
+                height='288'
+                width='288'
+                onClick={() => setImageModalOpen(true)}
                 src={data.image}
-                isOpen={imageModalOpen}
-                onClose={() => setImageModalOpen(false)}
-              />
-              {data.image ? (
-                <Image
-                  alt='Image'
-                  height='288'
-                  width='288'
-                  onClick={() => setImageModalOpen(true)}
-                  src={data.image}
-                  className='
+                className='
                 object-cover 
                 cursor-pointer 
                 hover:scale-105
                 transition 
                 translate
               '
-                />
-              ) : (
-                <div>{data.body}</div>
-              )}
-            </div>
+              />
+            ) : (
+              <ReactMarkdown className="prose">
+                {data.body ? data.body.toString() : ""}
+              </ReactMarkdown>
+            )}
+          </div>
           {isLast && isOwn && seenList.length > 0 && (
             <div
               className='

@@ -57,7 +57,7 @@ const Form = () => {
    * @param {Object} result - The result of the upload.
    */
   const handleUpload = (result: any) => {
-    console.log(result)
+    console.log(result);
     if (result.info.format === "pdf") {
       const pdfUrl = result.info.secure_url;
       axios.post("/api/messages", {
@@ -71,6 +71,10 @@ const Form = () => {
       });
     }
   };
+
+  // Render the component
+  // Form component
+  // ... other code
 
   // Render the component
   return (
@@ -90,6 +94,7 @@ const Form = () => {
           errors={errors}
           required
           placeholder='Write a message'
+          onSubmit={() => handleSubmit(onSubmit)()} // pass the submit function to MessageInput
         />
         <button type='submit' className=' p-2 bg-black'>
           <HiPaperAirplane size={18} className='text-white' />
