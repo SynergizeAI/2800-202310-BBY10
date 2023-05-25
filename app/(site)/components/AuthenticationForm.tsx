@@ -160,9 +160,9 @@ const AuthenticationForm = () => {
             {formType === "LOGIN" ? "Create an account" : "Login"}
           </div>
         </div>
-        {/* <Link href='/' className='underline cursor-pointer'>
+        <Link href='/forgot-password' className='underline cursor-pointer'>
           Forgot Password?
-        </Link> */}
+        </Link>
       </div>
     </div>
   );
